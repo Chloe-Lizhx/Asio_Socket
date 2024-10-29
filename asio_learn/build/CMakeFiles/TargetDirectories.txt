@@ -1,0 +1,8 @@
+/home/lzx/C++/asio_learn/build/CMakeFiles/edit_cache.dir
+/home/lzx/C++/asio_learn/build/CMakeFiles/rebuild_cache.dir
+/home/lzx/C++/asio_learn/build/Iasyn_server/CMakeFiles/server.dir
+/home/lzx/C++/asio_learn/build/Iasyn_server/CMakeFiles/edit_cache.dir
+/home/lzx/C++/asio_learn/build/Iasyn_server/CMakeFiles/rebuild_cache.dir
+/home/lzx/C++/asio_learn/build/sync_server/CMakeFiles/server1.dir
+/home/lzx/C++/asio_learn/build/sync_server/CMakeFiles/edit_cache.dir
+/home/lzx/C++/asio_learn/build/sync_server/CMakeFiles/rebuild_cache.dir
