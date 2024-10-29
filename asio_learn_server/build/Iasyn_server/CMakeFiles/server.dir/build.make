@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lzx/C++/asio_learn
+CMAKE_SOURCE_DIR = /home/lzx/Asio_Socket/asio_learn_server
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lzx/C++/asio_learn/build
+CMAKE_BINARY_DIR = /home/lzx/Asio_Socket/asio_learn_server/build
 
 # Include any dependencies generated for this target.
 include Iasyn_server/CMakeFiles/server.dir/depend.make
@@ -72,43 +72,59 @@ include Iasyn_server/CMakeFiles/server.dir/flags.make
 Iasyn_server/CMakeFiles/server.dir/server.cpp.o: Iasyn_server/CMakeFiles/server.dir/flags.make
 Iasyn_server/CMakeFiles/server.dir/server.cpp.o: ../Iasyn_server/server.cpp
 Iasyn_server/CMakeFiles/server.dir/server.cpp.o: Iasyn_server/CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lzx/C++/asio_learn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object Iasyn_server/CMakeFiles/server.dir/server.cpp.o"
-	cd /home/lzx/C++/asio_learn/build/Iasyn_server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT Iasyn_server/CMakeFiles/server.dir/server.cpp.o -MF CMakeFiles/server.dir/server.cpp.o.d -o CMakeFiles/server.dir/server.cpp.o -c /home/lzx/C++/asio_learn/Iasyn_server/server.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object Iasyn_server/CMakeFiles/server.dir/server.cpp.o"
+	cd /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT Iasyn_server/CMakeFiles/server.dir/server.cpp.o -MF CMakeFiles/server.dir/server.cpp.o.d -o CMakeFiles/server.dir/server.cpp.o -c /home/lzx/Asio_Socket/asio_learn_server/Iasyn_server/server.cpp
 
 Iasyn_server/CMakeFiles/server.dir/server.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server.dir/server.cpp.i"
-	cd /home/lzx/C++/asio_learn/build/Iasyn_server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lzx/C++/asio_learn/Iasyn_server/server.cpp > CMakeFiles/server.dir/server.cpp.i
+	cd /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lzx/Asio_Socket/asio_learn_server/Iasyn_server/server.cpp > CMakeFiles/server.dir/server.cpp.i
 
 Iasyn_server/CMakeFiles/server.dir/server.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server.dir/server.cpp.s"
-	cd /home/lzx/C++/asio_learn/build/Iasyn_server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lzx/C++/asio_learn/Iasyn_server/server.cpp -o CMakeFiles/server.dir/server.cpp.s
+	cd /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lzx/Asio_Socket/asio_learn_server/Iasyn_server/server.cpp -o CMakeFiles/server.dir/server.cpp.s
+
+Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.o: Iasyn_server/CMakeFiles/server.dir/flags.make
+Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.o: ../Iasyn_server/SocketSendQueue.cpp
+Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.o: Iasyn_server/CMakeFiles/server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.o"
+	cd /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.o -MF CMakeFiles/server.dir/SocketSendQueue.cpp.o.d -o CMakeFiles/server.dir/SocketSendQueue.cpp.o -c /home/lzx/Asio_Socket/asio_learn_server/Iasyn_server/SocketSendQueue.cpp
+
+Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/server.dir/SocketSendQueue.cpp.i"
+	cd /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/lzx/Asio_Socket/asio_learn_server/Iasyn_server/SocketSendQueue.cpp > CMakeFiles/server.dir/SocketSendQueue.cpp.i
+
+Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/server.dir/SocketSendQueue.cpp.s"
+	cd /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/lzx/Asio_Socket/asio_learn_server/Iasyn_server/SocketSendQueue.cpp -o CMakeFiles/server.dir/SocketSendQueue.cpp.s
 
 # Object files for target server
 server_OBJECTS = \
-"CMakeFiles/server.dir/server.cpp.o"
+"CMakeFiles/server.dir/server.cpp.o" \
+"CMakeFiles/server.dir/SocketSendQueue.cpp.o"
 
 # External object files for target server
 server_EXTERNAL_OBJECTS =
 
-../bin/server: Iasyn_server/CMakeFiles/server.dir/server.cpp.o
-../bin/server: Iasyn_server/CMakeFiles/server.dir/build.make
-../bin/server: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.74.0
-../bin/server: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.74.0
-../bin/server: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0
-../bin/server: /usr/lib/x86_64-linux-gnu/libboost_atomic.so.1.74.0
-../bin/server: Iasyn_server/CMakeFiles/server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lzx/C++/asio_learn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../../bin/server"
-	cd /home/lzx/C++/asio_learn/build/Iasyn_server && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/server.dir/link.txt --verbose=$(VERBOSE)
+../Iasyn_server/bin/server: Iasyn_server/CMakeFiles/server.dir/server.cpp.o
+../Iasyn_server/bin/server: Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.o
+../Iasyn_server/bin/server: Iasyn_server/CMakeFiles/server.dir/build.make
+../Iasyn_server/bin/server: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.74.0
+../Iasyn_server/bin/server: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.74.0
+../Iasyn_server/bin/server: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.74.0
+../Iasyn_server/bin/server: /usr/lib/x86_64-linux-gnu/libboost_atomic.so.1.74.0
+../Iasyn_server/bin/server: Iasyn_server/CMakeFiles/server.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable ../../Iasyn_server/bin/server"
+	cd /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-Iasyn_server/CMakeFiles/server.dir/build: ../bin/server
+Iasyn_server/CMakeFiles/server.dir/build: ../Iasyn_server/bin/server
 .PHONY : Iasyn_server/CMakeFiles/server.dir/build
 
 Iasyn_server/CMakeFiles/server.dir/clean:
-	cd /home/lzx/C++/asio_learn/build/Iasyn_server && $(CMAKE_COMMAND) -P CMakeFiles/server.dir/cmake_clean.cmake
+	cd /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server && $(CMAKE_COMMAND) -P CMakeFiles/server.dir/cmake_clean.cmake
 .PHONY : Iasyn_server/CMakeFiles/server.dir/clean
 
 Iasyn_server/CMakeFiles/server.dir/depend:
-	cd /home/lzx/C++/asio_learn/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lzx/C++/asio_learn /home/lzx/C++/asio_learn/Iasyn_server /home/lzx/C++/asio_learn/build /home/lzx/C++/asio_learn/build/Iasyn_server /home/lzx/C++/asio_learn/build/Iasyn_server/CMakeFiles/server.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/lzx/Asio_Socket/asio_learn_server /home/lzx/Asio_Socket/asio_learn_server/Iasyn_server /home/lzx/Asio_Socket/asio_learn_server/build /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server/CMakeFiles/server.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : Iasyn_server/CMakeFiles/server.dir/depend
 

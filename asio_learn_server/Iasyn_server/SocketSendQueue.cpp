@@ -29,10 +29,10 @@ void SocketSendQueue::process()
     auto item=_sendqueue.front();
     _sendqueue.pop_front();
     boost::asio::async_write(*(item.sock),item.data,
-                            [item,this](boost::system::error_code &err,size_t bytes)
+                            [item,this](const boost::system::error_code &err,size_t bytes)
                             {
                                 if(err){return;}
                                 item.callback();
-                                this->sendcompleted();
+                                this->sendcomplete();
                             });
 }

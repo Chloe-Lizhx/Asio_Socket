@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
-  "../../bin/server"
-  "../../bin/server.pdb"
+  "../../Iasyn_server/bin/server"
+  "../../Iasyn_server/bin/server.pdb"
+  "CMakeFiles/server.dir/SocketSendQueue.cpp.o"
+  "CMakeFiles/server.dir/SocketSendQueue.cpp.o.d"
   "CMakeFiles/server.dir/server.cpp.o"
   "CMakeFiles/server.dir/server.cpp.o.d"
 )

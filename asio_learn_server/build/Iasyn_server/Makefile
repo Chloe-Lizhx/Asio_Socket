@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lzx/C++/asio_learn
+CMAKE_SOURCE_DIR = /home/lzx/Asio_Socket/asio_learn_server
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lzx/C++/asio_learn/build
+CMAKE_BINARY_DIR = /home/lzx/Asio_Socket/asio_learn_server/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/lzx/C++/asio_learn/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn/build/CMakeFiles /home/lzx/C++/asio_learn/build/Iasyn_server//CMakeFiles/progress.marks
-	cd /home/lzx/C++/asio_learn/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn/build/CMakeFiles 0
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles /home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server//CMakeFiles/progress.marks
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/lzx/C++/asio_learn/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/clean
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/lzx/C++/asio_learn/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/preinstall
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/lzx/C++/asio_learn/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/preinstall
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/lzx/C++/asio_learn/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 Iasyn_server/CMakeFiles/server.dir/rule:
-	cd /home/lzx/C++/asio_learn/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/CMakeFiles/server.dir/rule
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/CMakeFiles/server.dir/rule
 .PHONY : Iasyn_server/CMakeFiles/server.dir/rule
 
 # Convenience name for target.
@@ -127,15 +127,39 @@ server: Iasyn_server/CMakeFiles/server.dir/rule
 
 # fast build rule for target.
 server/fast:
-	cd /home/lzx/C++/asio_learn/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/build
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/build
 .PHONY : server/fast
+
+SocketSendQueue.o: SocketSendQueue.cpp.o
+.PHONY : SocketSendQueue.o
+
+# target to build an object file
+SocketSendQueue.cpp.o:
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.o
+.PHONY : SocketSendQueue.cpp.o
+
+SocketSendQueue.i: SocketSendQueue.cpp.i
+.PHONY : SocketSendQueue.i
+
+# target to preprocess a source file
+SocketSendQueue.cpp.i:
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.i
+.PHONY : SocketSendQueue.cpp.i
+
+SocketSendQueue.s: SocketSendQueue.cpp.s
+.PHONY : SocketSendQueue.s
+
+# target to generate assembly for a file
+SocketSendQueue.cpp.s:
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.s
+.PHONY : SocketSendQueue.cpp.s
 
 server.o: server.cpp.o
 .PHONY : server.o
 
 # target to build an object file
 server.cpp.o:
-	cd /home/lzx/C++/asio_learn/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/server.cpp.o
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/server.cpp.o
 .PHONY : server.cpp.o
 
 server.i: server.cpp.i
@@ -143,7 +167,7 @@ server.i: server.cpp.i
 
 # target to preprocess a source file
 server.cpp.i:
-	cd /home/lzx/C++/asio_learn/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/server.cpp.i
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/server.cpp.i
 .PHONY : server.cpp.i
 
 server.s: server.cpp.s
@@ -151,7 +175,7 @@ server.s: server.cpp.s
 
 # target to generate assembly for a file
 server.cpp.s:
-	cd /home/lzx/C++/asio_learn/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/server.cpp.s
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/server.cpp.s
 .PHONY : server.cpp.s
 
 # Help Target
@@ -163,6 +187,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... server"
+	@echo "... SocketSendQueue.o"
+	@echo "... SocketSendQueue.i"
+	@echo "... SocketSendQueue.s"
 	@echo "... server.o"
 	@echo "... server.i"
 	@echo "... server.s"
@@ -177,6 +204,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/lzx/C++/asio_learn/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/lzx/Asio_Socket/asio_learn_server/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

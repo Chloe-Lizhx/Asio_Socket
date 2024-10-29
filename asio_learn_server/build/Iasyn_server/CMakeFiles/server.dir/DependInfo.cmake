@@ -8,7 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/lzx/C++/asio_learn/Iasyn_server/server.cpp" "Iasyn_server/CMakeFiles/server.dir/server.cpp.o" "gcc" "Iasyn_server/CMakeFiles/server.dir/server.cpp.o.d"
+  "/home/lzx/Asio_Socket/asio_learn_server/Iasyn_server/SocketSendQueue.cpp" "Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.o" "gcc" "Iasyn_server/CMakeFiles/server.dir/SocketSendQueue.cpp.o.d"
+  "/home/lzx/Asio_Socket/asio_learn_server/Iasyn_server/server.cpp" "Iasyn_server/CMakeFiles/server.dir/server.cpp.o" "gcc" "Iasyn_server/CMakeFiles/server.dir/server.cpp.o.d"
   )
 
 # Targets to which this target links.

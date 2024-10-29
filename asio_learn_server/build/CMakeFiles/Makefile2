@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lzx/C++/asio_learn
+CMAKE_SOURCE_DIR = /home/lzx/Asio_Socket/asio_learn_server
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lzx/C++/asio_learn/build
+CMAKE_BINARY_DIR = /home/lzx/Asio_Socket/asio_learn_server/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -114,14 +114,14 @@ sync_server/clean: sync_server/CMakeFiles/server1.dir/clean
 Iasyn_server/CMakeFiles/server.dir/all:
 	$(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/depend
 	$(MAKE) $(MAKESILENT) -f Iasyn_server/CMakeFiles/server.dir/build.make Iasyn_server/CMakeFiles/server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzx/C++/asio_learn/build/CMakeFiles --progress-num=1,2 "Built target server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles --progress-num=1,2,3 "Built target server"
 .PHONY : Iasyn_server/CMakeFiles/server.dir/all
 
 # Build rule for subdir invocation for target.
 Iasyn_server/CMakeFiles/server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_server/CMakeFiles/server.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles 0
 .PHONY : Iasyn_server/CMakeFiles/server.dir/rule
 
 # Convenience name for target.
@@ -140,14 +140,14 @@ Iasyn_server/CMakeFiles/server.dir/clean:
 sync_server/CMakeFiles/server1.dir/all:
 	$(MAKE) $(MAKESILENT) -f sync_server/CMakeFiles/server1.dir/build.make sync_server/CMakeFiles/server1.dir/depend
 	$(MAKE) $(MAKESILENT) -f sync_server/CMakeFiles/server1.dir/build.make sync_server/CMakeFiles/server1.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzx/C++/asio_learn/build/CMakeFiles --progress-num=3,4 "Built target server1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles --progress-num=4,5 "Built target server1"
 .PHONY : sync_server/CMakeFiles/server1.dir/all
 
 # Build rule for subdir invocation for target.
 sync_server/CMakeFiles/server1.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sync_server/CMakeFiles/server1.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles 0
 .PHONY : sync_server/CMakeFiles/server1.dir/rule
 
 # Convenience name for target.

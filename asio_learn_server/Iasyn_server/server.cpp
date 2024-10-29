@@ -1,3 +1,7 @@
+#include <mutex>
+#include <thread>
+#include <boost/thread/thread.hpp>
+#include <boost/asio/strand.hpp>
 #include "server.hpp"
 
 using namespace std;
@@ -30,6 +34,7 @@ int main()
     std::shared_ptr<io_service::work> work(new io_service::work(*service));
     boost::asio::io_service::strand strand(*service);
     std::shared_ptr<Server> server(new Server(*service,5005));//只有shared_ptr<Server>定义的对象才能使用shared_from_this()函数
+    std::shared_ptr<SocketSendQueue> sendqueue;
     server->do_repeat();
     boost::thread_group work_threads;
     for(int i=0;i<3;i++)

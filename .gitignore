@@ -1,0 +1,6 @@
+asio_learn_client/build
+asio_learn_server/build
+asio_learn_client/Iasyn_client/bin
+asio_learn_client/sync_client/bin
+asio_learn_client/Iasyn_server/bin
+asio_learn_client/sync_server/bin
