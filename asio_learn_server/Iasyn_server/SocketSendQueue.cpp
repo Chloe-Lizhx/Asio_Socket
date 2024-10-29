@@ -15,7 +15,7 @@ void SocketSendQueue::dispatch(std::shared_ptr<Socket> sock,
     process();
 }
 
-void SocketSendQueue::sendcompleted()
+void SocketSendQueue::sendcomplete()
 {
     std::lock_guard<std::mutex> lock(_queuemutex);
     _ready=true;

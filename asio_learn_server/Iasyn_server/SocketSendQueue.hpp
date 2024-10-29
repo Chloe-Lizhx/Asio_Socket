@@ -16,7 +16,7 @@ public:
     SocketSendQueue &operator=(const SocketSendQueue &)=delete;//禁止拷贝赋值
 
     void dispatch(std::shared_ptr<Socket> sock,boost::asio::const_buffers_1 data,std::function<void()> callback);
-    void sendcompleted();
+    void sendcomplete();
 private:
     void process();
     struct itemtosend
