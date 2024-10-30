@@ -3,9 +3,12 @@
 
 SocketSendQueue::~SocketSendQueue()
 {
-    assert(!_sendqueue.empty());
+    if(!_sendqueue.empty()){std::cerr<<"queue is not empty!"<<std::endl;exit(1);};
 }
-
+SocketSendQueue::SocketSendQueue()
+{
+    _queuemutex.unlock();
+}
 void SocketSendQueue::dispatch(std::shared_ptr<Socket> sock,
                                boost::asio::const_buffers_1 data,
                                std::function<void()> callback)
@@ -33,6 +36,6 @@ void SocketSendQueue::process()
                             {
                                 if(err){return;}
                                 item.callback();
-                                this->sendcomplete();
+                                this->sendcomplete();//只有前面的数据发送完成，后面的数据才能发送，保证顺序
                             });
 }

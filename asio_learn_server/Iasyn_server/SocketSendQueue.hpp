@@ -1,4 +1,5 @@
 #include <boost/asio.hpp>
+#include <iostream>
 #include <memory>
 #include <mutex>
 #include <functional>
@@ -9,7 +10,7 @@ class SocketSendQueue
 {
 public:
     using Socket=boost::asio::ip::tcp::socket;
-    SocketSendQueue() = default;
+    SocketSendQueue() ;
     ~SocketSendQueue();
 
     SocketSendQueue(const SocketSendQueue &)=delete;//禁止拷贝构造
@@ -26,7 +27,7 @@ private:
         std::function<void()> callback;
     };
 
-    bool _ready;
+    bool _ready=true;
     std::deque<itemtosend> _sendqueue;
     std::mutex _queuemutex;
 };

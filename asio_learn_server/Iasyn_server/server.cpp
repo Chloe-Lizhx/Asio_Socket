@@ -8,19 +8,10 @@ using namespace std;
 using namespace boost::asio;
 using namespace boost::asio::ip;
 std::mutex m;
-void multhread(io_service &service);
 
 void multhread(io_service &service)
 {
-    {
-        lock_guard<mutex> lk(m);
-        std::cout << "[" << std::this_thread::get_id() << "] Thread Start" << std::endl;
-    }
     service.run();  
-    {
-        lock_guard<mutex> lk(m);
-        std::cout << "[" << std::this_thread::get_id() << "] Thread Finish" << std::endl;
-    }
 }
 
 void show(int i)
@@ -34,7 +25,6 @@ int main()
     std::shared_ptr<io_service::work> work(new io_service::work(*service));
     boost::asio::io_service::strand strand(*service);
     std::shared_ptr<Server> server(new Server(*service,5005));//只有shared_ptr<Server>定义的对象才能使用shared_from_this()函数
-    std::shared_ptr<SocketSendQueue> sendqueue;
     server->do_repeat();
     boost::thread_group work_threads;
     for(int i=0;i<3;i++)
