@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lzx/C++/asio_learn_client
+CMAKE_SOURCE_DIR = /home/lzx/Asio_Socket/asio_learn_client
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lzx/C++/asio_learn_client/build
+CMAKE_BINARY_DIR = /home/lzx/Asio_Socket/asio_learn_client/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -114,14 +114,14 @@ sync_client/clean: sync_client/CMakeFiles/client1.dir/clean
 Iasyn_client/CMakeFiles/client.dir/all:
 	$(MAKE) $(MAKESILENT) -f Iasyn_client/CMakeFiles/client.dir/build.make Iasyn_client/CMakeFiles/client.dir/depend
 	$(MAKE) $(MAKESILENT) -f Iasyn_client/CMakeFiles/client.dir/build.make Iasyn_client/CMakeFiles/client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzx/C++/asio_learn_client/build/CMakeFiles --progress-num=1,2 "Built target client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzx/Asio_Socket/asio_learn_client/build/CMakeFiles --progress-num=1,2 "Built target client"
 .PHONY : Iasyn_client/CMakeFiles/client.dir/all
 
 # Build rule for subdir invocation for target.
 Iasyn_client/CMakeFiles/client.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn_client/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_client/build/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/CMakeFiles/client.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn_client/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_client/build/CMakeFiles 0
 .PHONY : Iasyn_client/CMakeFiles/client.dir/rule
 
 # Convenience name for target.
@@ -140,14 +140,14 @@ Iasyn_client/CMakeFiles/client.dir/clean:
 sync_client/CMakeFiles/client1.dir/all:
 	$(MAKE) $(MAKESILENT) -f sync_client/CMakeFiles/client1.dir/build.make sync_client/CMakeFiles/client1.dir/depend
 	$(MAKE) $(MAKESILENT) -f sync_client/CMakeFiles/client1.dir/build.make sync_client/CMakeFiles/client1.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzx/C++/asio_learn_client/build/CMakeFiles --progress-num=3,4 "Built target client1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/lzx/Asio_Socket/asio_learn_client/build/CMakeFiles --progress-num=3,4 "Built target client1"
 .PHONY : sync_client/CMakeFiles/client1.dir/all
 
 # Build rule for subdir invocation for target.
 sync_client/CMakeFiles/client1.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn_client/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_client/build/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 sync_client/CMakeFiles/client1.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn_client/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_client/build/CMakeFiles 0
 .PHONY : sync_client/CMakeFiles/client1.dir/rule
 
 # Convenience name for target.

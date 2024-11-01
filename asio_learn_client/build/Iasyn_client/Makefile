@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lzx/C++/asio_learn_client
+CMAKE_SOURCE_DIR = /home/lzx/Asio_Socket/asio_learn_client
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lzx/C++/asio_learn_client/build
+CMAKE_BINARY_DIR = /home/lzx/Asio_Socket/asio_learn_client/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/lzx/C++/asio_learn_client/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn_client/build/CMakeFiles /home/lzx/C++/asio_learn_client/build/Iasyn_client//CMakeFiles/progress.marks
-	cd /home/lzx/C++/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/C++/asio_learn_client/build/CMakeFiles 0
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_client/build/CMakeFiles /home/lzx/Asio_Socket/asio_learn_client/build/Iasyn_client//CMakeFiles/progress.marks
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lzx/Asio_Socket/asio_learn_client/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/lzx/C++/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/clean
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/lzx/C++/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/preinstall
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/lzx/C++/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/preinstall
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/lzx/C++/asio_learn_client/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 Iasyn_client/CMakeFiles/client.dir/rule:
-	cd /home/lzx/C++/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/CMakeFiles/client.dir/rule
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Iasyn_client/CMakeFiles/client.dir/rule
 .PHONY : Iasyn_client/CMakeFiles/client.dir/rule
 
 # Convenience name for target.
@@ -127,7 +127,7 @@ client: Iasyn_client/CMakeFiles/client.dir/rule
 
 # fast build rule for target.
 client/fast:
-	cd /home/lzx/C++/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f Iasyn_client/CMakeFiles/client.dir/build.make Iasyn_client/CMakeFiles/client.dir/build
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f Iasyn_client/CMakeFiles/client.dir/build.make Iasyn_client/CMakeFiles/client.dir/build
 .PHONY : client/fast
 
 client.o: client.cpp.o
@@ -135,7 +135,7 @@ client.o: client.cpp.o
 
 # target to build an object file
 client.cpp.o:
-	cd /home/lzx/C++/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f Iasyn_client/CMakeFiles/client.dir/build.make Iasyn_client/CMakeFiles/client.dir/client.cpp.o
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f Iasyn_client/CMakeFiles/client.dir/build.make Iasyn_client/CMakeFiles/client.dir/client.cpp.o
 .PHONY : client.cpp.o
 
 client.i: client.cpp.i
@@ -143,7 +143,7 @@ client.i: client.cpp.i
 
 # target to preprocess a source file
 client.cpp.i:
-	cd /home/lzx/C++/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f Iasyn_client/CMakeFiles/client.dir/build.make Iasyn_client/CMakeFiles/client.dir/client.cpp.i
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f Iasyn_client/CMakeFiles/client.dir/build.make Iasyn_client/CMakeFiles/client.dir/client.cpp.i
 .PHONY : client.cpp.i
 
 client.s: client.cpp.s
@@ -151,7 +151,7 @@ client.s: client.cpp.s
 
 # target to generate assembly for a file
 client.cpp.s:
-	cd /home/lzx/C++/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f Iasyn_client/CMakeFiles/client.dir/build.make Iasyn_client/CMakeFiles/client.dir/client.cpp.s
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(MAKE) $(MAKESILENT) -f Iasyn_client/CMakeFiles/client.dir/build.make Iasyn_client/CMakeFiles/client.dir/client.cpp.s
 .PHONY : client.cpp.s
 
 # Help Target
@@ -177,6 +177,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/lzx/C++/asio_learn_client/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/lzx/Asio_Socket/asio_learn_client/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

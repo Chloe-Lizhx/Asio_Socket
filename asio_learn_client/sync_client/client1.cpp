@@ -31,9 +31,17 @@ int main()
     {
         //发送
         memset(buff,0,sizeof(buff));
-        sprintf(buff,"这是第%d个超级boy, 编号00%d",i,i);
+        std::cout<<"发送：";
+        std::cin.getline(buff,sizeof(buff));
+        size_t newline_pos = std::strlen(buff);
+        if (newline_pos < sizeof(buff) - 1 && buff[newline_pos] == '\n')
+        {
+            buff[newline_pos] = '\0';
+        }
+
+        //sprintf(buff,"这是第%d个超级boy, 编号00%d",i,i);
         if(!asio::write(sock,buffer(buff,strlen(buff)))){std::cerr<<"发送失败"<<std::endl;exit(2);}
-        std::cout << "发送：" << buff << std::endl;
+        //std::cout << "发送：" << buff << std::endl;
         //接收
         memset(buff,0,sizeof(buff));
         //asio::read函数要求传入确定的接收数据的大小,因此使用sock.read_some更加友好

@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/lzx/C++/asio_learn_client/Iasyn_client/client.cpp" "Iasyn_client/CMakeFiles/client.dir/client.cpp.o" "gcc" "Iasyn_client/CMakeFiles/client.dir/client.cpp.o.d"
+  "/home/lzx/Asio_Socket/asio_learn_client/Iasyn_client/client.cpp" "Iasyn_client/CMakeFiles/client.dir/client.cpp.o" "gcc" "Iasyn_client/CMakeFiles/client.dir/client.cpp.o.d"
   )
 
 # Targets to which this target links.

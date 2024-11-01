@@ -31,12 +31,12 @@ int main()
     {
         work_threads.create_thread(boost::bind(multhread,ref(*service)));
     }
-    for(int i=0;i<10;i++)
-    {
-        //下面这句可以保证show函数在同一个线程中按顺序执行，但不能保证只在一个线程中执行
-        //service->post(strand.wrap(boost::bind(show,i)));
-        strand.dispatch(boost::bind(show,i));//这一句可以保证只在一个线程中顺序执行
-    }
+    // for(int i=0;i<10;i++)
+    // {
+    //     //下面这句可以保证show函数在同一个线程中按顺序执行，但不能保证只在一个线程中执行
+    //     //service->post(strand.wrap(boost::bind(show,i)));
+    //     strand.dispatch(boost::bind(show,i));//这一句可以保证只在一个线程中顺序执行
+    // }
     work.reset();
     work_threads.join_all();
     return 0;

@@ -1,4 +1,4 @@
-# Install script for directory: /home/lzx/C++/asio_learn_client
+# Install script for directory: /home/lzx/Asio_Socket/asio_learn_client
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,12 +44,12 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/lzx/C++/asio_learn_client/build/Iasyn_client/cmake_install.cmake")
+  include("/home/lzx/Asio_Socket/asio_learn_client/build/Iasyn_client/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/lzx/C++/asio_learn_client/build/sync_client/cmake_install.cmake")
+  include("/home/lzx/Asio_Socket/asio_learn_client/build/sync_client/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -60,5 +60,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/lzx/C++/asio_learn_client/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/lzx/Asio_Socket/asio_learn_client/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,5 +1,5 @@
 Iasyn_client/CMakeFiles/client.dir/client.cpp.o: \
- /home/lzx/C++/asio_learn_client/Iasyn_client/client.cpp \
+ /home/lzx/Asio_Socket/asio_learn_client/Iasyn_client/client.cpp \
  /usr/include/stdc-predef.h /usr/include/boost/asio.hpp \
  /usr/include/boost/asio/associated_allocator.hpp \
  /usr/include/boost/asio/detail/config.hpp /usr/include/boost/config.hpp \

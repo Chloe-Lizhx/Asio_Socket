@@ -1,5 +1,5 @@
 sync_client/CMakeFiles/client1.dir/client1.cpp.o: \
- /home/lzx/C++/asio_learn_client/sync_client/client1.cpp \
+ /home/lzx/Asio_Socket/asio_learn_client/sync_client/client1.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/11/iostream \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

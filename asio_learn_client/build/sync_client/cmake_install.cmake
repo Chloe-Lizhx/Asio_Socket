@@ -1,4 +1,4 @@
-# Install script for directory: /home/lzx/C++/asio_learn_client/sync_client
+# Install script for directory: /home/lzx/Asio_Socket/asio_learn_client/sync_client
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
