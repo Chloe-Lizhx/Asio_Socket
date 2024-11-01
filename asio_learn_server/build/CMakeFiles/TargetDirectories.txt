@@ -1,8 +1,0 @@
-/home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles/edit_cache.dir
-/home/lzx/Asio_Socket/asio_learn_server/build/CMakeFiles/rebuild_cache.dir
-/home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server/CMakeFiles/server.dir
-/home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server/CMakeFiles/edit_cache.dir
-/home/lzx/Asio_Socket/asio_learn_server/build/Iasyn_server/CMakeFiles/rebuild_cache.dir
-/home/lzx/Asio_Socket/asio_learn_server/build/sync_server/CMakeFiles/server1.dir
-/home/lzx/Asio_Socket/asio_learn_server/build/sync_server/CMakeFiles/edit_cache.dir
-/home/lzx/Asio_Socket/asio_learn_server/build/sync_server/CMakeFiles/rebuild_cache.dir
