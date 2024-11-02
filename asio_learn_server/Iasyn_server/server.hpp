@@ -7,7 +7,8 @@
 using namespace std;
 using namespace boost::asio;
 using namespace boost::asio::ip;
-
+namespace com
+{
 class Session:public std::enable_shared_from_this<Session>
 {
     private:
@@ -127,3 +128,4 @@ class Server:public std::enable_shared_from_this<Server>
             });
     }
 };
+}

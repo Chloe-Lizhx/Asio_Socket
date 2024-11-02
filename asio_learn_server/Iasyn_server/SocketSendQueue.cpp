@@ -1,6 +1,8 @@
 #include <assert.h>
 #include "SocketSendQueue.hpp"
 
+namespace com
+{ 
 SocketSendQueue::~SocketSendQueue()
 {
     if(!_sendqueue.empty()){std::cerr<<"queue is not empty!"<<std::endl;exit(1);};
@@ -38,4 +40,5 @@ void SocketSendQueue::process()
                                 item.callback();
                                 this->sendcomplete();//只有前面的数据发送完成，后面的数据才能发送，保证顺序
                             });
+}
 }

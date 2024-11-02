@@ -5,6 +5,7 @@
 #include "server.hpp"
 
 using namespace std;
+using namespace com;
 using namespace boost::asio;
 using namespace boost::asio::ip;
 std::mutex m;

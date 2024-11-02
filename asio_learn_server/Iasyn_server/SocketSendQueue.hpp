@@ -6,6 +6,7 @@
 #include <deque>
 #include <string>
 
+namespace com{
 class SocketSendQueue
 {
 public:
@@ -31,3 +32,4 @@ private:
     std::deque<itemtosend> _sendqueue;
     std::mutex _queuemutex;
 };
+}
