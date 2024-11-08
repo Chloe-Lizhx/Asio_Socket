@@ -21,6 +21,7 @@ namespace com{
     {
         std::unique_lock<std::mutex> lock(_completeMutex);
 
-        _completeCondition.wait(lock,[this]{return _complete;});
+        _completeCondition.wait(lock,[this]{return _complete;});//在_complete为false时等待，为true并且被激活时退出等待。
+        //wait阻塞时，lock自动解锁。
     }
 }

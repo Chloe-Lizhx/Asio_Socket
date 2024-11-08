@@ -25,6 +25,7 @@ int main()
     ip::tcp::socket sock(service);
     // 第2步：向服务器发起连接请求。 
     if(!Connect(ep,sock)){std::cerr<<"连接失败"<<std::endl;exit(1);}
+    std::cout<<"服务端地址："<<"192.168.44.129:5005"<<std::endl;
     // 第3步：与服务端通讯，客户发送一个请求报文后等待服务端的回复，收到回复后，再发下一个请求报文。
     char buff[1024];
     for(int i=0;i<5;i++)

@@ -36,7 +36,8 @@ class Session:public std::enable_shared_from_this<Session>
             [this,self](const boost::system::error_code &err,size_t bytes)
             {
                 if(err) {do_close();return;} 
-                cout<<"[" << std::this_thread::get_id()<<"]"<<"读入："<<bytes<<"个字节,"<<"内容："<<read_buff<<endl;
+                //cout<<"[" << std::this_thread::get_id()<<"]"<<"读入："<<bytes<<"个字节,"<<"内容："<<read_buff<<endl;
+                std::cout<<"接收："<<read_buff<<std::endl;;
                 //if(read_buff=="OK"){do_close();return;} 
                 do_write(std::move(read_buff));
             }
@@ -68,7 +69,8 @@ class Session:public std::enable_shared_from_this<Session>
             sendqueue.dispatch(socket_,buffer(msg->c_str(),msg->size()),
             [this,self]()
             {
-                std::cout<<"写入: "<<msg->size()<<"个字节,内容： "<<msg->c_str()<<std::endl;
+                //std::cout<<"写入: "<<msg->size()<<"个字节,内容： "<<msg->c_str()<<std::endl;
+                std::cout<<"发送："<<msg->c_str()<<std::endl;
                 Repeat();
             }
             );
@@ -83,7 +85,7 @@ class Session:public std::enable_shared_from_this<Session>
             [this,self](const boost::system::error_code &err,size_t bytes)
             {
                 if(err) {do_close();return;} 
-                cout<<"[" << std::this_thread::get_id() << "]"<<"写入："<<bytes<<"个字节,"<<"内容："<<write_buff<<endl;
+                std::cout<<"[" << std::this_thread::get_id() << "]"<<"写入："<<bytes<<"个字节,"<<"内容："<<write_buff<<std::endl;
                 do_read();
             }
             );
