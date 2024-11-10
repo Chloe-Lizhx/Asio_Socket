@@ -128,6 +128,15 @@
     "cinttypes": "cpp",
     "typeindex": "cpp",
     "typeinfo": "cpp",
-    "variant": "cpp"
-  }
+    "variant": "cpp",
+    "forward_list": "cpp",
+    "buffer": "cpp",
+    "executor": "cpp",
+    "internet": "cpp",
+    "io_context": "cpp",
+    "netfwd": "cpp",
+    "socket": "cpp",
+    "timer": "cpp"
+  },
+  "cmake.sourceDirectory": "/home/lzx/Asio_Socket/asio_learn_server"
 }

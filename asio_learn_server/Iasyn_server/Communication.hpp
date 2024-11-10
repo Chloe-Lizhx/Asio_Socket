@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stddef.h>
 #include <string>
 #include <boost/range/irange.hpp>
@@ -6,6 +8,7 @@ namespace com{
 
 using Rank = int;
 class Communication{
+public:
     Communication &operator=(Communication &&) = delete;//禁止com1=std::move(com0)这种操作
 
     virtual ~Communication(){}
@@ -21,13 +24,13 @@ class Communication{
     {
         return boost::irange<Rank>(0,static_cast<Rank>(getRemoteCommunicatorSize()));
     }
-
+    //建立一对一的连接的接受连接方
     virtual void acceptConnection(std::string const &acceptorName,
                                   std::string const &requesterName,
                                   std::string const &tag,
                                   int acceptorRank,
                                   int rankoffset = 0) = 0;
-
+    //建立一对一的连接的请求连接方
     virtual void requsetConnection(std::string const &acceptorName,
                                    std::string const &requesterName,
                                    std::string const &tag,
