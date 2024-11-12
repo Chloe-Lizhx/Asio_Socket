@@ -1,6 +1,7 @@
 #include "SocketCommunication.hpp"
 #include "utils/assertion.hpp"
 #include "getIpAddress.hpp"
+#include "conncetionInfo.hpp"
 namespace com
 {
     SocketCommunication::SocketCommunication(unsigned short portNumber ,
@@ -39,7 +40,7 @@ namespace com
                                                int rankOffset = 0
                                                ) 
     {
-        Assert(_connected);
+        Assert(_connected,"已经连接");
         SetRankOffset(rankOffset);
         std::string address;
         try
@@ -52,6 +53,10 @@ namespace com
 
             _portNumber=acceptor.local_endpoint().port();//获取实际系统分配的端口号
             address = ipAddress + ":" + std::to_string(_portNumber);
+            //创建连接信息的文件
+            conInfoWriter conInfo(acceptorName,requesterName,tag,acceptorRank,_addressDirectory);
+            conInfo.write(address);
+            
 
         }
         catch(const std::exception& e)

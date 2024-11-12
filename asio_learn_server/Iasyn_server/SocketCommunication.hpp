@@ -36,6 +36,8 @@ public:
 
     virtual void closeConnection() override;
 
+    virtual size_t getRemoteCommunicatorSize() override;
+
     virtual void prepareEstablishment(std::string const &acceptorName,std::string const &requesterName) override;
     virtual void cleanupEstablishment(std::string const &acceptorName,std::string const &requesterName) override;
 

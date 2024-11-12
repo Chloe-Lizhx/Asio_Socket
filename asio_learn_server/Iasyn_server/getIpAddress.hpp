@@ -6,10 +6,14 @@
 #include <sys/types.h>
 #include <ifaddrs.h>
 #include "SocketCommunication.hpp"
+#include "utils/assertion.hpp"
 
 namespace com{
     std::string SocketCommunication::getIpAddress()
     {
+    #ifdef _WIN32
+        return "127.0.0.1";
+    #else
     struct ifaddrs * ifAddrStruct=NULL;
     void * tmpAddrPtr=NULL;
     std::string address;
@@ -30,9 +34,9 @@ namespace com{
         } 
         ifAddrStruct1=ifAddrStruct1->ifa_next;
     }
-    if(ifAddrStruct!=NULL)
-    {
-    freeifaddrs(ifAddrStruct);}
+    Assert(ifAddrStruct==NULL,"系统没有检测到任何网络接口信息");
+    freeifaddrs(ifAddrStruct);
     return address;
+    #endif
     }
 }
