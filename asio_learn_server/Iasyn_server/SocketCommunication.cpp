@@ -1,7 +1,7 @@
 #include "SocketCommunication.hpp"
 #include "utils/assertion.hpp"
 #include "getIpAddress.hpp"
-#include "conncetionInfo.hpp"
+#include "connectionInfo.hpp"
 namespace com
 {
     SocketCommunication::SocketCommunication(unsigned short portNumber ,

@@ -1,4 +1,6 @@
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-add_executable(server "server.cpp" "server.hpp" "SocketSendQueue.hpp" "SocketSendQueue.cpp")
-target_compile_options(server PRIVATE -g)
-target_link_libraries(server ${Boost_LIBRARIES})
+set(SocketCommunicationTest "SocketCommunicationTest.cpp" "Communication.cpp" "Communication.hpp" 
+                            "connectionInfo.hpp" "getIpAddress.hpp" "SocketCommunication.cpp" "SocketCommunication.hpp")
+add_executable(SocketCommunicationTest ${SocketCommunicationTest})
+target_compile_options(SocketCommunicationTest PRIVATE -g)
+target_link_libraries(SocketCommunicationTest ${Boost_LIBRARIES})
