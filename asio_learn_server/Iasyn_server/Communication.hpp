@@ -39,7 +39,11 @@ public:
 
     virtual void send(std::string const &itemtoSend,Rank rankReceiver) = 0;
 
+    virtual void send(int itemstoSend,Rank rankReceiver) = 0;
+
     virtual void receive(std::string &itemtoReceive,Rank rankSender) = 0;
+
+    virtual void receive(int &itemstoReceive,Rank rankSender) = 0;
 
     virtual void closeConnection() = 0;
 
@@ -53,7 +57,7 @@ public:
 
 protected:
     int _RankOffset = 0;
-    bool _connected = {false};
+    bool _connected = false;
     virtual int adjustRank(Rank rank) const;
 
 };

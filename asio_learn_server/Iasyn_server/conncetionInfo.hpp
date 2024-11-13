@@ -176,6 +176,7 @@ conInfoWriter::~conInfoWriter()
     Assert(!fs::exists(path),"conInfoWriter析构失败,由于通信文件已经不存在");
     try
     {
+        //移除文件
         fs::remove(path);
         Assert(fs::exists(path),"conInfoWriter析构失败,由于通信文件没有被成功的remove");
     }

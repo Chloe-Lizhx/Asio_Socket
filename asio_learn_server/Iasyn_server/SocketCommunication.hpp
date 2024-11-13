@@ -32,7 +32,11 @@ public:
 
     virtual void send(std::string const &itemtoSend,Rank rankReceiver) override;
 
+    virtual void send(int itemstoSend,Rank rankReceiver) override;
+
     virtual void receive(std::string &itemtoReceive,Rank rankSender) override;
+
+    virtual void receive(int &itemstoReceive,Rank rankSender) override;
 
     virtual void closeConnection() override;
 
@@ -57,9 +61,8 @@ private:
     std::shared_ptr<Work> _work;
     std::thread _thread;
 
-    SocketSendQueue _queue;
     std::map<int,std::shared_ptr<Socket>> _sockets;
-
+    SocketSendQueue _queue;
     std::string getIpAddress();
 
 };
