@@ -4,6 +4,7 @@
 #include <memory>
 
 namespace com {
+class Request;
 using PtrRequest = std::shared_ptr<Request>;
 class Request {
 

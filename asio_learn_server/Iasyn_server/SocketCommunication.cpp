@@ -186,4 +186,10 @@ namespace com
         }
     }
 
+    size_t SocketCommunication::getRemoteCommunicatorSize() {return _sockets.size();}
+
+    void SocketCommunication::prepareEstablishment(std::string const &acceptorName,std::string const &requesterName) {}
+    void SocketCommunication::cleanupEstablishment(std::string const &acceptorName,std::string const &requesterName) {}
+
+
 }
