@@ -34,7 +34,7 @@ namespace com{
         } 
         ifAddrStruct1=ifAddrStruct1->ifa_next;
     }
-    Assert(ifAddrStruct==NULL,"系统没有检测到任何网络接口信息");
+    Assert((ifAddrStruct==NULL),"系统没有检测到任何网络接口信息");
     freeifaddrs(ifAddrStruct);
     return address;
     #endif

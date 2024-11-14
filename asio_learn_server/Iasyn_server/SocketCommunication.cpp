@@ -1,5 +1,6 @@
 #include "SocketCommunication.hpp"
 #include "utils/assertion.hpp"
+#include "utils/print.hpp"
 #include "getIpAddress.hpp"
 #include "connectionInfo.hpp"
 namespace com
@@ -36,9 +37,8 @@ namespace com
     void SocketCommunication::acceptConnection(std::string const &acceptorName,
                                                std::string const &requesterName,
                                                std::string const &tag,
-                                               Rank acceptorRank,
-                                               int rankOffset = 0
-                                               ) 
+                                               int acceptorRank,
+                                               int rankOffset) //C++最新要求：声明时带有默认参数，实现时没有默认值，或者反过来
     {
         Assert(_connected,"已经连接");
         SetRankOffset(rankOffset);
@@ -50,8 +50,8 @@ namespace com
             tcp::endpoint endpoint(boost::asio::ip::address::from_string(ipAddress),_portNumber);
             tcp::acceptor acceptor(*_service,endpoint);
             //如果不提前进入listen,后面每次执行acceptor.accept()都会先进入listen状态，再accept
-            acceptor.listen();
             acceptor.set_option(tcp::acceptor::reuse_address(_reuseAddress));
+            acceptor.listen();
             //获取实际系统分配的端口号
             _portNumber=acceptor.local_endpoint().port();
             address = ipAddress + ":" + std::to_string(_portNumber);
@@ -77,6 +77,7 @@ namespace com
                 if(peercurrent==0)
                 {peercount = requesterCommunicationSize;}
                 Assert((peercount!=requesterCommunicationSize),"从requesterRank接收到的requesterCommunicationSize错误");
+                print(requesterRank,"accept成功");
             }while(++peercurrent<requesterCommunicationSize);
             acceptor.close();
         }
@@ -115,6 +116,7 @@ namespace com
             socket->connect(endpoint,err);
             _connected = !err;
             Assert(!isconnected(),"客户端未连接成功");
+            print("***","request成功");
             //在客户端只有一个套接字
             _sockets[0] = std::move(socket);
             _sockets[0]->write_some(boost::asio::buffer(&requesterRank,sizeof(int)));
