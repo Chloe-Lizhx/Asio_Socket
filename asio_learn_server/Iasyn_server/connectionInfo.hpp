@@ -169,7 +169,7 @@ void conInfoWriter::write(std::string_view info) const
     Assert(!fs::exists(tmp),"临时文件没有创建成功");
     //对tmp所指代的文件进行覆盖，但是tmp本身不发生变化
     fs::rename(tmp,path);
-    Assert(fs::exists(path),"通信文件没有建立成功");
+    Assert(!fs::exists(path),"通信文件没有建立成功");
 }
 
 conInfoWriter::~conInfoWriter()

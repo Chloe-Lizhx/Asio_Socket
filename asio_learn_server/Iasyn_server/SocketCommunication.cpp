@@ -28,6 +28,13 @@ namespace com
     //关闭所有套接字
     void SocketCommunication::closeConnection()
     {
+        if(_thread.joinable())//如果还有异步事件未完成
+        {//如果service没有异步工作内容了，_work.reset()解除对service的控制，service按需析构
+        _work.reset();
+        _service->stop();
+        //主线程等待_thread结束,即使_thread已经完成分配的函数
+        _thread.join();
+        }
         for(auto iter=_sockets.begin();iter!=_sockets.end();iter++)
         {
             iter->second->close();
@@ -77,7 +84,7 @@ namespace com
                 if(peercurrent==0)
                 {peercount = requesterCommunicationSize;}
                 Assert((peercount!=requesterCommunicationSize),"从requesterRank接收到的requesterCommunicationSize错误");
-                print(requesterRank,"accept成功");
+                print(requesterRank," accept成功 ");
             }while(++peercurrent<requesterCommunicationSize);
             acceptor.close();
         }
@@ -116,13 +123,13 @@ namespace com
             socket->connect(endpoint,err);
             _connected = !err;
             Assert(!isconnected(),"客户端未连接成功");
-            print("***","request成功");
             //在客户端只有一个套接字
-            _sockets[0] = std::move(socket);
-            _sockets[0]->write_some(boost::asio::buffer(&requesterRank,sizeof(int)));
+            socket->write_some(boost::asio::buffer(&requesterRank,sizeof(int)));
             int acceptorRank = -1;
-            _sockets[0]->read_some(boost::asio::buffer(&acceptorRank,sizeof(int)));
-            _sockets[0]->write_some(boost::asio::buffer(&requesterCommunicationSize,sizeof(int)));
+            socket->read_some(boost::asio::buffer(&acceptorRank,sizeof(int)));
+            _sockets[acceptorRank] = std::move(socket);
+            _sockets[acceptorRank]->write_some(boost::asio::buffer(&requesterCommunicationSize,sizeof(int)));
+            print(acceptorRank," request成功 ");
         }
         catch(const std::exception& e)
         {
@@ -150,9 +157,12 @@ namespace com
     void SocketCommunication::send(std::string const &itemstoSend,Rank rankReceiver)
     {
         rankReceiver = adjustRank(rankReceiver);
+        size_t size = itemstoSend.size() + 1;
         try
         {
-            _sockets[rankReceiver]->write_some(boost::asio::buffer(&itemstoSend,itemstoSend.length()));
+            _sockets[rankReceiver]->write_some(boost::asio::buffer(&size,sizeof(size_t)));
+            //C++中很多系统需要字符串最后加一个"\0",c_str()返回的字符串最后一位是“\0”
+            _sockets[rankReceiver]->write_some(boost::asio::buffer(itemstoSend.c_str(),size));
         }
         catch(const std::exception& e)
         {
@@ -176,9 +186,13 @@ namespace com
     void SocketCommunication::receive(std::string &itemstoReceive,Rank rankSender)
     {
         rankSender = adjustRank(rankSender);
+        size_t size = -1;
         try
-        {
-            _sockets[rankSender]->read_some(boost::asio::buffer(&itemstoReceive,itemstoReceive.length()));
+        {//itemstoReceive为空时，buffer不能使用
+            _sockets[rankSender]->read_some(boost::asio::buffer(&size,sizeof(size_t)));
+            char msg[size];
+            _sockets[rankSender]->read_some(boost::asio::buffer(msg,size));
+            itemstoReceive = msg;
         }
         catch(const std::exception& e)
         {
