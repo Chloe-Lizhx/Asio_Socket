@@ -4,7 +4,8 @@
             "name": "linux-gcc-x64",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/eigen3"
+                "/usr/include/eigen3",
+                "/usr/include/x86_64-linux-gnu/sys"
             ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "${default}",

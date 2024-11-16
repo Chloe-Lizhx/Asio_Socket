@@ -51,7 +51,7 @@ protected:
     //将fliepath和localdirectory合并：./com-run/lzx-zxl/e9/61a7dbe33b574c8490ae23833a44ae
     std::string getFileName() const;
 };
-
+/// @brief 根据 acceptorName，requesterName，tag，rank(默认为 -1)，addressDirectory生成的地址文件读取要连接的IP+Port
 class conInfoReader:public conInfo
 {
 public:
@@ -70,7 +70,7 @@ public:
     std::string read() const;
 
 };
-
+/// @brief 根据 acceptorName，requesterName，tag，rank(默认为 -1），addressDirectory生成地址文件并写入IP+Port
 class conInfoWriter:public conInfo
 {
 public :
@@ -136,7 +136,7 @@ std::string conInfo::getFileName() const
     auto filename = fs::path(localDirectory) / hashed;
     return filename;
 }
-
+/// @brief 读取地址
 std::string conInfoReader::read() const
 {
     auto path = getFileName();
@@ -148,7 +148,7 @@ std::string conInfoReader::read() const
     boost::algorithm::trim_right(addressData);
     return addressData;
 }
-
+/// @brief 创建通信文件，并将地址信息写入
 void conInfoWriter::write(std::string_view info) const
 {
     auto path = getFileName();

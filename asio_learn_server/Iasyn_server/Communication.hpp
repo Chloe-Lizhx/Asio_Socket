@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 #include <string>
+#include <set>
 #include <boost/range/irange.hpp>
 
 namespace com{
@@ -24,18 +25,31 @@ public:
     {
         return boost::irange<Rank>(0,static_cast<Rank>(getRemoteCommunicatorSize()));
     }
-    //建立一对一的连接的接受连接方
+    //接受多个客户端的连接，每个客户端必须有不同的requesterRank，相同的requesterCommunicationSize
     virtual void acceptConnection(std::string const &acceptorName,
                                   std::string const &requesterName,
                                   std::string const &tag,
                                   int acceptorRank,
                                   int rankoffset = 0) = 0;
-    //建立一对一的连接的请求连接方
+
+    virtual void acceptConnectionAsServer(std::string const &acceptorName,
+                                        std::string const &requesterName,
+                                        std::string const &tag,
+                                        int                acceptorRank,
+                                        int                requesterCommunicatorSize) = 0;
+            
+    //请求连接至服务端，每一个SocketCommunicaton对象只能调用一次该方法。
     virtual void requsetConnection(std::string const &acceptorName,
                                    std::string const &requesterName,
                                    std::string const &tag,
                                    int requesterRank,
                                    int requesterCommunicationSize) = 0;
+
+    virtual void requestConnectionAsClient(std::string const &  acceptorName,
+                                         std::string const &  requesterName,
+                                         std::string const &  tag,
+                                         std::set<int> const &acceptorRanks,
+                                         int                  requesterRank) = 0;
 
     virtual void send(std::string const &itemtoSend,Rank rankReceiver) = 0;
 

@@ -1,3 +1,4 @@
+#include <vector>
 #include "SocketCommunication.hpp"
 #include "utils/assertion.hpp"
 #include "utils/print.hpp"
@@ -63,7 +64,7 @@ namespace com
             _portNumber=acceptor.local_endpoint().port();
             address = ipAddress + ":" + std::to_string(_portNumber);
             //创建连接信息的文件
-            conInfoWriter conInfo(acceptorName,requesterName,tag,acceptorRank,_addressDirectory);
+            conInfoWriter conInfo(acceptorName,requesterName,tag,_addressDirectory);
             conInfo.write(address);
             int peercurrent = 0;
             int peercount = -1;
@@ -96,6 +97,54 @@ namespace com
         _work = std::make_shared<Work>(*_service);
         _thread = std::thread([this]{_service->run();});
     } 
+
+    void SocketCommunication::acceptConnectionAsServer(std::string const &acceptorName,
+                                                       std::string const &requesterName,
+                                                       std::string const &tag,
+                                                       int                acceptorRank,
+                                                       int                requesterCommunicatorSize) 
+    {
+        Assert(_connected,"已经连接");
+        if(requesterCommunicatorSize==0)
+        {
+            print("","不接受任何连接");
+            _connected = true;
+            return;
+        }
+        std::string address;
+        try
+        {
+            using boost::asio::ip::tcp;
+            std::string ipAddress = getIpAddress();
+            tcp::endpoint endpoint(boost::asio::ip::address::from_string(ipAddress),_portNumber);
+            tcp::acceptor acceptor(*_service,endpoint);
+            acceptor.set_option(tcp::acceptor::reuse_address(_reuseAddress));
+            acceptor.listen();
+            //得到实际分配的端口
+            _portNumber = acceptor.local_endpoint().port();
+            address = ipAddress + ':' + std::to_string(_portNumber);
+            conInfoWriter conInfo(acceptorName,requesterName,tag,acceptorRank,_addressDirectory);
+            conInfo.write(address);
+
+            for(int peercurrent = 0;peercurrent < requesterCommunicatorSize;peercurrent++)
+            {
+                std::shared_ptr<Socket> socket = std::make_shared<Socket>(*_service);
+                acceptor.accept(*socket);
+                _connected = true;
+                int requesterRank = -1;
+                socket->read_some(boost::asio::buffer(&requesterRank,sizeof(int)));
+                _sockets[requesterRank] = std::move(socket);
+            }
+            acceptor.close();
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"acceptAsServer出错");
+        }
+        
+        _work = std::make_shared<Work>(*_service);
+        _thread = std::thread([this]{_service->run();});
+    }
 
     void SocketCommunication::requsetConnection(std::string const &acceptorName,
                                                 std::string const &requesterName,
@@ -140,7 +189,44 @@ namespace com
         _thread = std::thread([this]{_service->run();});
     }
                            
+    void SocketCommunication::requestConnectionAsClient(std::string const &acceptorName,
+                                                        std::string const &requesterName,
+                                                        std::string const &tag,
+                                                        std::set<int> const &acceptorRanks,
+                                                        int          requesterRank)
+    {
+        Assert(_connected,"已经连接");
+        for(auto const &acceptorRank : acceptorRanks)
+        {
+            std::string address;
+            conInfoReader conInfo(acceptorName,requesterName,tag,acceptorRank,_addressDirectory);
+            address = conInfo.read();
+            auto const sep = address.find(':');
+            std::string ipAddress = address.substr(0,sep);
+            std::string portNum = address.substr(sep+1);
+            _portNumber = std::stoul(portNum);
 
+            try
+            {
+                using boost::asio::ip::tcp;
+                tcp::endpoint endpoint(boost::asio::ip::address::from_string(ipAddress),_portNumber);
+                std::shared_ptr<Socket> socket = std::make_shared<Socket>(*_service);
+                boost::system::error_code err;
+                socket->connect(endpoint,err);
+                Assert(err,"connectAsClient的connect错误");
+                _connected = !err;
+                socket->write_some(boost::asio::buffer(&requesterRank,sizeof(int)));
+                _sockets[acceptorRank] = std::move(socket);
+            }
+            catch(const std::exception& e)
+            {
+                Assert(e.what(),"requestAsClient出错");
+            }
+        }
+
+        _work = std::make_shared<Work>(*_service);
+        _thread = std::thread([this]{_service->run();});
+    }
     void SocketCommunication::send(int itemstoSend,Rank rankReceiver)
     {
         rankReceiver = adjustRank(rankReceiver);
@@ -190,9 +276,10 @@ namespace com
         try
         {//itemstoReceive为空时，buffer不能使用
             _sockets[rankSender]->read_some(boost::asio::buffer(&size,sizeof(size_t)));
-            char msg[size];
-            _sockets[rankSender]->read_some(boost::asio::buffer(msg,size));
-            itemstoReceive = msg;
+            //std::vector是在堆上创建内存，而char []是在栈上创建内存，直接使用msg.data()可以省去边界检测，提高效率
+            std::vector<char> msg(size);
+            _sockets[rankSender]->read_some(boost::asio::buffer(msg.data(),size));
+            itemstoReceive = msg.data();
         }
         catch(const std::exception& e)
         {
