@@ -5,6 +5,7 @@ set(SocketCommunicationTest
 "Communication.cpp" 
 "Communication.hpp" 
 "connectionInfo.hpp"
+"connectionInfo.cpp"
 "getIpAddress.hpp"
 "SocketCommunication.cpp" 
 "SocketCommunication.hpp"

@@ -4,6 +4,7 @@
 #include "utils/print.hpp"
 #include "getIpAddress.hpp"
 #include "connectionInfo.hpp"
+
 namespace com
 {
     SocketCommunication::SocketCommunication(unsigned short portNumber ,
@@ -289,8 +290,30 @@ namespace com
 
     size_t SocketCommunication::getRemoteCommunicatorSize() {return _sockets.size();}
 
-    void SocketCommunication::prepareEstablishment(std::string const &acceptorName,std::string const &requesterName) {}
-    void SocketCommunication::cleanupEstablishment(std::string const &acceptorName,std::string const &requesterName) {}
+    void SocketCommunication::prepareEstablishment(std::string const &acceptorName,std::string const &requesterName) 
+    {
+        fs::path path = impl::getLocalDirectory(acceptorName,requesterName,_addressDirectory);
+        try
+        {
+            fs::create_directory(path);
+        }
+        catch(const fs::filesystem_error& e)
+        {
+            Assert(e.what(),"prepareEstablishment出错");
+        } 
+    }
+    void SocketCommunication::cleanupEstablishment(std::string const &acceptorName,std::string const &requesterName) 
+    {
+        fs::path path = impl::getLocalDirectory(acceptorName,requesterName,_addressDirectory);
+        try
+        {
+            fs::remove_all(path);
+        }
+        catch(const fs::filesystem_error& e)
+        {
+            Assert(e.what(),"cleanupEstablishment出错");
+        }
+    }
 
 
 }

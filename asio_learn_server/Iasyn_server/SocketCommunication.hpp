@@ -14,7 +14,7 @@ class SocketCommunication : public Communication
 {
 public:
     /*portNumber = 0,代表端口号由系统分配，不建议自己设置
-    reuseAddress = false,连接断开后，一般会有2min的等待时间，这段时间内同样的IP+端口号不能再次启用
+    reuseAddress = false,服务端因故连接断开后，一般会有2min的等待时间，这段时间内同样的IP+端口号不能再次启用
     std::string networkName = "lo",linux系统中的回环网络
     std::string addressDirectory = "."，地址交换文件夹在当前执行的程序所处的位置进行创建*/
     SocketCommunication(unsigned short portNumber = 0,

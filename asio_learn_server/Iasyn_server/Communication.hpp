@@ -50,6 +50,11 @@ public:
                                          std::string const &  tag,
                                          std::set<int> const &acceptorRanks,
                                          int                  requesterRank) = 0;
+                                        
+    void IntraConnect(std::string const &participantName,
+                            std::string const &tag,
+                            int               rank,
+                            int               size);
 
     virtual void send(std::string const &itemtoSend,Rank rankReceiver) = 0;
 
