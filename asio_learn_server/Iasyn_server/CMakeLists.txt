@@ -1,4 +1,6 @@
 project(com)
+set(CMAKE_CXX_STANDARD 20)#确保能够使用std::span
+set(CXX_STANDARD_REQUIRED ON)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 set(SocketCommunicationTest 
 "SocketCommunicationTest.cpp" 

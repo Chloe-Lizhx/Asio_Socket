@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <string>
 #include <set>
+#include <span>
 #include <boost/range/irange.hpp>
 
 namespace com{
@@ -60,10 +61,26 @@ public:
 
     virtual void send(int itemstoSend,Rank rankReceiver) = 0;
 
+    virtual void send(double itemstoSend,Rank rankReceiver) = 0;
+
+    virtual void send(bool itemstoSend,Rank rankReceiver) = 0;
+
+    virtual void send(std::span<const int> itemstoSend,Rank rankReceiver) = 0;
+
+    virtual void send(std::span<const double> itemstoSend,Rank rankReceiver) = 0;
+
     virtual void receive(std::string &itemtoReceive,Rank rankSender) = 0;
 
     virtual void receive(int &itemstoReceive,Rank rankSender) = 0;
 
+    virtual void receive(double &itemstoSend,Rank rankSender) = 0;
+
+    virtual void receive(bool &itemstoSend,Rank rankSender) = 0;
+
+    virtual void receive(std::span<int> itemstoReceive,Rank rankSender) = 0;
+
+    virtual void receive(std::span<double> itemstoReceive,Rank rankSender) = 0;
+    
     virtual void closeConnection() = 0;
 
     virtual void prepareEstablishment(std::string const &acceptorName,std::string const &requesterName) = 0;

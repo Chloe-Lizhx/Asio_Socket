@@ -102,11 +102,57 @@ void acceptConAsServer_requestConAsClient(unsigned short port = 0,
     {
         Comm[3]->acceptConnectionAsServer(acceptorName,requesterName,tag,3,2);
     }
-    
+}
+
+void IntraConnect(unsigned short port = 0,
+                bool reuseAddress = false,
+                std::string networkName = "lo",
+                std::string addressDirectory = ".")
+{
+    using CommPtr = std::shared_ptr<Communication>;
+    using SocketCommPtr = std::shared_ptr<SocketCommunication>;
+    int testNumber = 4;//请求和接收端各创建testNumber/2个实例
+    std::vector<CommPtr> Comm(testNumber);
+    for(int i=0;i<testNumber;i++)
+    {
+        SocketCommPtr socketcomm(new SocketCommunication(port,reuseAddress,networkName,addressDirectory));
+        Comm[i]=std::move(socketcomm);
+    }
+    std::string participantName = "lzx";
+    std::string tag = "0";
+    //Comm的0,1作为request端，2,3作为accept端
+    //创建四个进程
+    pid_t pid1 = fork();
+    pid_t pid2 = fork();
+    if(pid1!=0&&pid2!=0)
+    {//等待服务端打开
+        int i1=-1,i2=-1,i3=-1;
+        Comm[0]->IntraConnect(participantName,tag,0,4);
+        Comm[0]->receive(i1,1);
+        Comm[0]->receive(i2,2);
+        Comm[0]->receive(i3,3);
+        std::cout<<"rank1: "<<i1<<" rank2 :"<<i2<<" rank3:"<<i3<<std::endl;
+    }else if(pid1!=0&&pid2==0)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        Comm[1]->IntraConnect(participantName,tag,1,4);
+        Comm[1]->send(8,0);
+    }else if(pid1==0&&pid2!=0)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        Comm[2]->IntraConnect(participantName,tag,2,4);
+        Comm[2]->send(88,0);
+    }else if(pid1==0&&pid2==0)
+    {
+       std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        Comm[3]->IntraConnect(participantName,tag,3,4);
+        Comm[3]->send(888,0);
+    }
 }
 int main()
 {
-    acceptConAsServer_requestConAsClient();
+    //acceptConAsServer_requestConAsClient();
     //acceptCon_requestConTest();
+    IntraConnect();
     return 0;
 }

@@ -50,9 +50,25 @@ public:
 
     virtual void send(int itemstoSend,Rank rankReceiver) override;
 
+    virtual void send(double itemstoSend,Rank rankReceiver) override;
+
+    virtual void send(bool itemstoSend,Rank rankReceiver) override;
+
+    virtual void send(std::span<const int> itemstoSend,Rank rankReceiver) override;
+
+    virtual void send(std::span<const double> itemstoSend,Rank rankReceiver) override;
+
     virtual void receive(std::string &itemtoReceive,Rank rankSender) override;
 
     virtual void receive(int &itemstoReceive,Rank rankSender) override;
+
+    virtual void receive(double &itemstoSend,Rank rankSender) override;
+
+    virtual void receive(bool &itemstoSend,Rank rankSender) override;
+
+    virtual void receive(std::span<int> itemstoReceive,Rank rankSender) override;
+
+    virtual void receive(std::span<double> itemstoReceive,Rank rankSender) override;
 
     virtual void closeConnection() override;
 
