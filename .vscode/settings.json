@@ -137,7 +137,8 @@
     "netfwd": "cpp",
     "socket": "cpp",
     "timer": "cpp",
-    "span": "cpp"
+    "span": "cpp",
+    "*.ipp": "cpp"
   },
   "cmake.sourceDirectory": "/home/lzx/Asio_Socket/asio_learn_server"
 }

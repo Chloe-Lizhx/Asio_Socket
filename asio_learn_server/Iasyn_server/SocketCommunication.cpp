@@ -1,5 +1,6 @@
 #include <vector>
 #include "SocketCommunication.hpp"
+#include "SocketRequest.hpp"
 #include "utils/assertion.hpp"
 #include "utils/print.hpp"
 #include "getIpAddress.hpp"
@@ -39,8 +40,10 @@ namespace com
         }
         for(auto iter=_sockets.begin();iter!=_sockets.end();iter++)
         {
-            iter->second->close();
+            iter->second->shutdown(Socket::shutdown_send);//将发送缓冲区的内容发送到对端，同时该套接字不可再写入新消息，但是不影响读对端发送过来的数据的过程
+            iter->second->close();//关闭套接字资源。如果只有close,没有shutdown,在close后就不能正常读取消息了，socket两端的数据收发就不完整。
         }
+        _connected = false;
     }    
 
     void SocketCommunication::acceptConnection(std::string const &acceptorName,
@@ -223,26 +226,16 @@ namespace com
             {
                 Assert(e.what(),"requestAsClient出错");
             }
+            std::this_thread::sleep_for(std::chrono::seconds(1));
         }
 
         _work = std::make_shared<Work>(*_service);
         _thread = std::thread([this]{_service->run();});
     }
-    void SocketCommunication::send(int itemstoSend,Rank rankReceiver)
-    {
-        rankReceiver = adjustRank(rankReceiver);
-        try
-        {
-            _sockets[rankReceiver]->write_some(boost::asio::buffer(&itemstoSend,sizeof(int)));
-        }
-        catch(const std::exception& e)
-        {
-            Assert(e.what(),"发送int数据出错");
-        }
-    }
 
     void SocketCommunication::send(std::string const &itemstoSend,Rank rankReceiver)
     {
+        Assert(!_connected,"未连接");
         rankReceiver = adjustRank(rankReceiver);
         size_t size = itemstoSend.size() + 1;
         try
@@ -257,21 +250,193 @@ namespace com
         } 
     }
 
-    void SocketCommunication::receive(int &itemstoReceive,Rank rankSender)
+    void SocketCommunication::send(const int &itemstoSend,Rank rankReceiver)
     {
-        rankSender = adjustRank(rankSender);
+        Assert(!_connected,"未连接");
+        rankReceiver = adjustRank(rankReceiver);
         try
         {
-            _sockets[rankSender]->read_some(boost::asio::buffer(&itemstoReceive,sizeof(int)));
+            _sockets[rankReceiver]->write_some(boost::asio::buffer(&itemstoSend,sizeof(int)));
         }
         catch(const std::exception& e)
         {
-            Assert(e.what(),"接收int数据出错");
+            Assert(e.what(),"发送int数据出错");
         }
     }
 
+    RequestPtr SocketCommunication::aSend(const int &itemstoSend,Rank rankReceiver)
+    {
+        Assert(!_connected,"未连接");
+        rankReceiver = adjustRank(rankReceiver);
+        RequestPtr request(new SocketRequest);
+        _queue.dispatch(_sockets[rankReceiver],
+                        boost::asio::buffer(&itemstoSend,sizeof(int)),
+                        [request]{std::static_pointer_cast<SocketRequest>(request)->complete();});
+        return request;
+    }
+
+    //  RequestPtr SocketCommunication::aSend(const int &itemstoSend,Rank rankReceiver)
+    // {
+    //     Assert(!_connected,"未连接");
+    //     rankReceiver = adjustRank(rankReceiver);
+    //     RequestPtr request(new SocketRequest);
+    //     _sockets[rankReceiver]->async_write_some(boost::asio::buffer(&itemstoSend,sizeof(int)),
+    //                     [request](const boost::system::error_code &err,size_t bytes)
+    //                     {std::static_pointer_cast<SocketRequest>(request)->complete();});
+    //     return request;
+    // }
+
+    void SocketCommunication::send(const double &itemstoSend,Rank rankReceiver)
+    {
+        Assert(!_connected,"未连接");
+        rankReceiver = adjustRank(rankReceiver);
+        try
+        {
+            _sockets[rankReceiver]->write_some(boost::asio::buffer(&itemstoSend,sizeof(double)));
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"发送double数据错误");
+        }
+    }
+
+    RequestPtr SocketCommunication::aSend(const double &itemstoSend,Rank rankReceiver)
+    {
+
+        Assert(!_connected,"未连接");
+        rankReceiver = adjustRank(rankReceiver);
+        RequestPtr request(new SocketRequest);
+        _queue.dispatch(_sockets[rankReceiver],
+                        boost::asio::buffer(&itemstoSend,sizeof(double)),
+                        [request]{std::static_pointer_cast<SocketRequest>(request)->complete();});
+        return request;
+    }
+
+    // RequestPtr SocketCommunication::aSend(const double &itemstoSend,Rank rankReceiver)
+    // {
+
+    //     Assert(!_connected,"未连接");
+    //     rankReceiver = adjustRank(rankReceiver);
+    //     RequestPtr request(new SocketRequest);
+    //     _sockets[rankReceiver]->async_write_some(boost::asio::buffer(&itemstoSend,sizeof(double)),
+    //                     [request](const boost::system::error_code &err,size_t bytes)
+    //                     {std::static_pointer_cast<SocketRequest>(request)->complete();});
+    //     return request;
+    // }
+
+
+    void SocketCommunication::send(bool itemstoSend,Rank rankReceiver)
+    {
+        Assert(!_connected,"未连接");
+        rankReceiver = adjustRank(rankReceiver);
+        try
+        {
+            _sockets[rankReceiver]->write_some(boost::asio::buffer(&itemstoSend,sizeof(bool)));
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"发送bool数据错误");
+        }
+    }
+
+    RequestPtr SocketCommunication::aSend(const bool &itemstoSend,Rank rankReceiver)
+    {
+        Assert(!_connected,"未连接");
+        rankReceiver = adjustRank(rankReceiver);
+        RequestPtr request(new SocketRequest);
+        _queue.dispatch(_sockets[rankReceiver],
+                        boost::asio::buffer(&itemstoSend,sizeof(bool)),
+                        [request]{std::static_pointer_cast<SocketRequest>(request)->complete();});
+        return request;
+    }
+
+    //     RequestPtr SocketCommunication::aSend(const bool &itemstoSend,Rank rankReceiver)
+    // {
+    //     Assert(!_connected,"未连接");
+    //     rankReceiver = adjustRank(rankReceiver);
+    //     RequestPtr request(new SocketRequest);
+    //     _sockets[rankReceiver]->async_write_some(boost::asio::buffer(&itemstoSend,sizeof(bool)),
+    //                     [request](const boost::system::error_code &err,size_t bytes)
+    //                     {std::static_pointer_cast<SocketRequest>(request)->complete();});
+    //     return request;
+    // }
+
+    void SocketCommunication::send(std::span<const int> itemstoSend,Rank rankReceiver)
+    {
+        Assert(!_connected,"未连接");
+        rankReceiver = adjustRank(rankReceiver);
+        try
+        {
+            _sockets[rankReceiver]->write_some(boost::asio::buffer(itemstoSend.data(),itemstoSend.size()*sizeof(int)));
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"发送std::span<const int>数据错误");
+        }
+    }
+
+    RequestPtr SocketCommunication::aSend(std::span<const int> itemstoSend,Rank rankReceiver)
+    {
+        Assert(!_connected,"未连接");
+        rankReceiver = adjustRank(rankReceiver);
+        RequestPtr request(new SocketRequest);
+        _queue.dispatch(_sockets[rankReceiver],
+                        boost::asio::buffer(itemstoSend.data(),itemstoSend.size()*sizeof(int)),
+                        [request]{std::static_pointer_cast<SocketRequest>(request)->complete();});
+        return request;
+    }
+
+    //     RequestPtr SocketCommunication::aSend(std::span<const int> itemstoSend,Rank rankReceiver)
+    // {
+    //     Assert(!_connected,"未连接");
+    //     rankReceiver = adjustRank(rankReceiver);
+    //     RequestPtr request(new SocketRequest);
+    //     _sockets[rankReceiver]->async_write_some(boost::asio::buffer(itemstoSend.data(),itemstoSend.size()*sizeof(int)),
+    //                     [request](const boost::system::error_code &err,size_t bytes)
+    //                     {std::static_pointer_cast<SocketRequest>(request)->complete();});
+    //     return request;
+    // }
+
+    void SocketCommunication::send(std::span<const double> itemstoSend,Rank rankReceiver)
+    {
+        Assert(!_connected,"未连接");
+        rankReceiver = adjustRank(rankReceiver);
+        try
+        {
+            _sockets[rankReceiver]->write_some(boost::asio::buffer(itemstoSend.data(),itemstoSend.size()*sizeof(double)));
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"发送std::span<const double>数据错误");
+        }
+    }
+
+     RequestPtr SocketCommunication::aSend(std::span<const double> itemstoSend,Rank rankReceiver)
+    {
+        Assert(!_connected,"未连接");
+        rankReceiver = adjustRank(rankReceiver);
+        RequestPtr request(new SocketRequest);
+        _queue.dispatch(_sockets[rankReceiver],
+                        boost::asio::buffer(itemstoSend.data(),itemstoSend.size()*sizeof(double)),
+                        [request]{std::static_pointer_cast<SocketRequest>(request)->complete();});
+        return request;
+    }
+    
+
+    //      RequestPtr SocketCommunication::aSend(std::span<const double> itemstoSend,Rank rankReceiver)
+    // {
+    //     Assert(!_connected,"未连接");
+    //     rankReceiver = adjustRank(rankReceiver);
+    //     RequestPtr request(new SocketRequest);
+    //     _sockets[rankReceiver]->async_write_some(boost::asio::buffer(itemstoSend.data(),itemstoSend.size()*sizeof(double)),
+    //                     [request](const boost::system::error_code &err,size_t bytes)
+    //                     {std::static_pointer_cast<SocketRequest>(request)->complete();});
+    //     return request;
+    // }
+    
     void SocketCommunication::receive(std::string &itemstoReceive,Rank rankSender)
     {
+        Assert(!_connected,"未连接");
         rankSender = adjustRank(rankSender);
         size_t size = -1;
         try
@@ -286,6 +451,166 @@ namespace com
         {
             Assert(e.what(),"接收string数据出错");
         }
+    }
+
+    void SocketCommunication::receive(int &itemstoReceive,Rank rankSender)
+    {
+        Assert(!_connected,"未连接");
+        rankSender = adjustRank(rankSender);
+        try
+        {
+            _sockets[rankSender]->read_some(boost::asio::buffer(&itemstoReceive,sizeof(int)));
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"接收int数据出错");
+        }
+    }
+
+    RequestPtr SocketCommunication::aReceive(int &itemstoReceive,Rank rankSender)
+    {
+        Assert(!_connected,"未连接");
+        rankSender = adjustRank(rankSender);
+        RequestPtr request(new SocketRequest);
+        try
+        {
+            _sockets[rankSender]->async_read_some(boost::asio::buffer(&itemstoReceive,sizeof(int)),
+                                                  [request](const boost::system::error_code &err,size_t bytes)
+                                                  {std::static_pointer_cast<SocketRequest>(request)->complete();});
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"异步接收int数据出错");
+        }   
+        return request;
+    }
+
+    void SocketCommunication::receive(double &itemstoReceive,Rank rankSender)
+    {
+        Assert(!_connected,"未连接");
+        rankSender = adjustRank(rankSender);
+        try
+        {
+            _sockets[rankSender]->read_some(boost::asio::buffer(&itemstoReceive,sizeof(double)));
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"接收double数据错误");
+        }
+    }
+
+    RequestPtr SocketCommunication::aReceive(double &itemstoReceive,Rank rankSender)
+    {
+        Assert(!_connected,"未连接");
+        rankSender = adjustRank(rankSender);
+        RequestPtr request(new SocketRequest);
+        try
+        {
+            _sockets[rankSender]->async_read_some(boost::asio::buffer(&itemstoReceive,sizeof(double)),
+                                                  [request](const boost::system::error_code &err,size_t bytes)
+                                                  {std::static_pointer_cast<SocketRequest>(request)->complete();});
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"异步接收double数据出错");
+        }
+        return request;
+    }
+
+    void SocketCommunication::receive(bool &itemstoReceive,Rank rankSender) 
+    {
+        Assert(!_connected,"未连接");
+        rankSender = adjustRank(rankSender);
+        try
+        {
+            _sockets[rankSender]->read_some(boost::asio::buffer(&itemstoReceive,sizeof(bool)));
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"接收bool数据错误");
+        }
+    }
+
+    RequestPtr SocketCommunication::aReceive(bool &itemstoReceive,Rank rankSender)
+    {
+        Assert(!_connected,"未连接");
+        rankSender = adjustRank(rankSender);
+        RequestPtr request(new SocketRequest);
+        try
+        {
+            _sockets[rankSender]->async_read_some(boost::asio::buffer(&itemstoReceive,sizeof(bool)),
+                                                  [request](const boost::system::error_code &err,size_t bytes)
+                                                  {std::static_pointer_cast<SocketRequest>(request)->complete();});
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"异步接收bool数据出错");
+        }
+        return request;
+    }
+
+    void SocketCommunication::receive(std::span<int> itemstoReceive,Rank rankSender)
+    {
+        Assert(!_connected,"未连接");
+        rankSender = adjustRank(rankSender);
+        try
+        {
+            _sockets[rankSender]->read_some(boost::asio::buffer(itemstoReceive.data(),itemstoReceive.size()*sizeof(int)));
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"接收std::span<int>数据错误");
+        }
+    }
+
+    RequestPtr SocketCommunication::aReceive(std::span<int> itemstoReceive,Rank rankSender)
+    {
+        Assert(!_connected,"未连接");
+        rankSender = adjustRank(rankSender);
+        RequestPtr request(new SocketRequest);
+        try
+        {
+            _sockets[rankSender]->async_read_some(boost::asio::buffer(itemstoReceive.data(),itemstoReceive.size()*sizeof(int)),
+                                                  [request](const boost::system::error_code &err,size_t bytes)
+                                                  {std::static_pointer_cast<SocketRequest>(request)->complete();});
+        }
+        catch(const std::exception& e)
+        {
+           Assert(e.what(),"异步接收std::span<int>数据错误");
+        }
+        return request;
+    }
+
+    void SocketCommunication::receive(std::span<double> itemstoReceive,Rank rankSender) 
+    {
+        Assert(!_connected,"未连接");
+        rankSender = adjustRank(rankSender);
+        try
+        {
+            _sockets[rankSender]->read_some(boost::asio::buffer(itemstoReceive.data(),itemstoReceive.size()*sizeof(double)));
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"接收std::span<double>数据出错");
+        }
+    }
+
+    RequestPtr SocketCommunication::aReceive(std::span<double> itemstoReceive,Rank rankSender)
+    {
+        Assert(!_connected,"未连接");
+        rankSender = adjustRank(rankSender);
+        RequestPtr request(new SocketRequest);
+        try
+        {
+            _sockets[rankSender]->async_read_some(boost::asio::buffer(itemstoReceive.data(),itemstoReceive.size()*sizeof(double)),
+                                                  [request](const boost::system::error_code &err,size_t bytes)
+                                                  {std::static_pointer_cast<SocketRequest>(request)->complete();});
+        }
+        catch(const std::exception& e)
+        {
+            Assert(e.what(),"异步发送std::span<double>数据错误");
+        }
+        return request;
     }
 
     size_t SocketCommunication::getRemoteCommunicatorSize() {return _sockets.size();}

@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <thread>
 #include "SocketSendQueue.hpp"
 
 namespace com
@@ -12,7 +13,7 @@ SocketSendQueue::SocketSendQueue()
     _queuemutex.unlock();
 }
 void SocketSendQueue::dispatch(std::shared_ptr<Socket> sock,
-                               boost::asio::const_buffers_1 data,
+                               boost::asio::const_buffer data,
                                std::function<void()> callback)
 {
     std::lock_guard<std::mutex> lock(_queuemutex);

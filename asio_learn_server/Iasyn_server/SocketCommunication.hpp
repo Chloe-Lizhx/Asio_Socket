@@ -46,29 +46,49 @@ public:
                                          std::set<int> const &acceptorRanks,
                                          int                  requesterRank) override;
 
-    virtual void send(std::string const &itemtoSend,Rank rankReceiver) override;
+    virtual void send(std::string const &itemstoSend,Rank rankReceiver) override;
 
-    virtual void send(int itemstoSend,Rank rankReceiver) override;
+    virtual void send(const int &itemstoSend,Rank rankReceiver) override;
 
-    virtual void send(double itemstoSend,Rank rankReceiver) override;
+    virtual RequestPtr aSend(const int &itemstoSend,Rank rankReceiver) override;
+
+    virtual void send(const double &itemstoSend,Rank rankReceiver) override;
+
+    virtual RequestPtr aSend(const double &itemstoSend,Rank rankReceiver) override;
 
     virtual void send(bool itemstoSend,Rank rankReceiver) override;
 
+    virtual RequestPtr aSend(const bool &itemstoSend,Rank rankReceiver) override;
+
     virtual void send(std::span<const int> itemstoSend,Rank rankReceiver) override;
+
+    virtual RequestPtr aSend(std::span<const int> itemstoSend,Rank rankReceiver) override;
 
     virtual void send(std::span<const double> itemstoSend,Rank rankReceiver) override;
 
-    virtual void receive(std::string &itemtoReceive,Rank rankSender) override;
+    virtual RequestPtr aSend(std::span<const double> itemstoSend,Rank rankReceiver) override;
+
+    virtual void receive(std::string &itemstoReceive,Rank rankSender) override;
 
     virtual void receive(int &itemstoReceive,Rank rankSender) override;
 
-    virtual void receive(double &itemstoSend,Rank rankSender) override;
+    virtual RequestPtr aReceive(int &itemstoReceive,Rank rankSender) override;
 
-    virtual void receive(bool &itemstoSend,Rank rankSender) override;
+    virtual void receive(double &itemstoReceive,Rank rankSender) override;
+
+    virtual RequestPtr aReceive(double &itemstoReceive,Rank rankSender) override;
+
+    virtual void receive(bool &itemstoReceive,Rank rankSender) override;
+
+    virtual RequestPtr aReceive(bool &itemstoReceive,Rank rankSender) override;
 
     virtual void receive(std::span<int> itemstoReceive,Rank rankSender) override;
 
+    virtual RequestPtr aReceive(std::span<int> itemstoReceive,Rank rankSender) override;
+
     virtual void receive(std::span<double> itemstoReceive,Rank rankSender) override;
+
+    virtual RequestPtr aReceive(std::span<double> itemstoReceive,Rank rankSender) override;
 
     virtual void closeConnection() override;
 

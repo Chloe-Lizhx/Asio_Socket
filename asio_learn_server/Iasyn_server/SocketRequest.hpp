@@ -14,6 +14,8 @@ namespace com{
 
         void wait() override;
 
+        virtual ~SocketRequest();
+
         private:
         bool _complete{false};
         std::mutex _completeMutex;
