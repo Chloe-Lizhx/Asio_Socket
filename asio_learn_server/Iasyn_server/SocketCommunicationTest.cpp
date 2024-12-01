@@ -7,8 +7,13 @@
 #include <chrono>
 #include <set>
 #include <thread>
+#include "CommunicationFactory.hpp"
+#include "SocketCommunicationFactory.hpp"
 #include "SocketCommunication.hpp"
 #include "Communication.hpp"
+#include "SharedPointer.hpp"
+#include "Request.hpp"
+#include "SocketRequest.hpp"
 using namespace com;
 unsigned short port = 0;
 bool reuseAddress = false;
@@ -220,11 +225,90 @@ void aSend_aRecvTest(unsigned short port = 0,
         std::cout<<"arr1 arr2 "<<arr1[0]<<"..."<<arr2[0]<<std::endl;
     }
 }
+
+void reducesum_broadcast(unsigned short port = 0,
+                bool reuseAddress = false,
+                std::string networkName = "lo",
+                std::string addressDirectory = ".")
+{
+    std::shared_ptr<CommunicationFactory> communicator =std::make_shared<SocketCommunicationFactory>();
+    std::vector<CommunicationPtr> communicators;
+    for(int i=0;i<4;i++)
+    {
+        communicators.push_back(communicator->newCommunication());
+    }
+    pid_t pid1 = fork();
+    pid_t pid2 = fork();
+    if(pid1!=0&&pid2!=0)
+    {
+        int rank=0;
+        communicators[0]->IntraConnect("lzx","88",rank,4);
+        std::vector<int> v={1,4,7,10,13};
+        std::vector<int> v1;
+        communicators[0]->AllreduceSumForPrimaryRank(v,v1);
+        communicators[0]->broadcastForPrimaryRank(v);
+        std::cout<<"rank0's sum: ";
+        for(auto i :v1)
+        {
+            std::cout<<i<<",";
+        }
+        std::cout<<""<<std::endl;
+    }
+    else if(pid1!=0&&pid2==0)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        int rank=1;
+        communicators[1]->IntraConnect("lzx","88",rank,4);
+        std::vector<int> v={2,5,8,11,14};
+        std::vector<int> v1;
+        communicators[1]->AllreduceSumForSecondaryRank(v,v1,0);
+        communicators[1]->broadcastForSecondaryRank(v,0);
+        std::cout<<"rank1's sum: ";
+        for(auto i :v1)
+        {
+            std::cout<<i<<",";
+        }
+        std::cout<<""<<std::endl;
+    }
+    else if(pid1==0&&pid2!=0)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        int rank=2;
+        communicators[2]->IntraConnect("lzx","88",rank,4);
+        std::vector<int> v={3,6,9,12,15};
+        std::vector<int> v1;
+        communicators[2]->AllreduceSumForSecondaryRank(v,v1,0);
+        communicators[2]->broadcastForSecondaryRank(v,0);
+        std::cout<<"rank2's sum: ";
+        for(auto i :v1)
+        {
+            std::cout<<i<<",";
+        }
+        std::cout<<""<<std::endl;
+    }
+    else if(pid1==0&&pid2==0)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        int rank=3;
+        communicators[3]->IntraConnect("lzx","88",rank,4);
+        std::vector<int> v={4,7,10,13,16};
+        std::vector<int> v1;
+        communicators[3]->AllreduceSumForSecondaryRank(v,v1,0);
+        communicators[3]->broadcastForSecondaryRank(v,0);
+        std::cout<<"rank3's sum: ";
+        for(auto i :v1)
+        {
+            std::cout<<i<<",";
+        }
+        std::cout<<""<<std::endl;
+    }
+}
 int main()
 {
     //acceptConAsServer_requestConAsClient();
     //acceptCon_requestConTest();
     //IntraConnect();
-    aSend_aRecvTest();
+    //aSend_aRecvTest();
+    reducesum_broadcast();
     return 0;
 }

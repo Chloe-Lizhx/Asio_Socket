@@ -1,15 +1,13 @@
-#pragma once 
-
 #include "SocketCommunicationFactory.hpp"
 #include "SocketCommunication.hpp"
 
 namespace com{
 
 SocketCommunicationFactory::SocketCommunicationFactory( 
-    unsigned short portNumber       = 0,
-    bool           reuseAddress     = false,
-    std::string    networkName      = "lo",
-    std::string    addressDirectory = ".")
+    unsigned short portNumber    ,
+    bool           reuseAddress  ,   
+    std::string    networkName   ,
+    std::string    addressDirectory )
     :portNumber(portNumber),
     reuseAddress(reuseAddress),
     networkName(networkName),
@@ -28,7 +26,7 @@ SocketCommunicationFactory::SocketCommunicationFactory(
     CommunicationPtr SocketCommunicationFactory::newCommunication()
     {
         return std::make_shared<SocketCommunication>
-        (new SocketCommunication(portNumber,reuseAddress,networkName,addressDirectory));
+        (portNumber,reuseAddress,networkName,addressDirectory);
     }
 
     std::string SocketCommunicationFactory::AddressDirectory()

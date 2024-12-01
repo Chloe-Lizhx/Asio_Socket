@@ -89,7 +89,6 @@ namespace com
                 if(peercurrent==0)
                 {peercount = requesterCommunicationSize;}
                 Assert((peercount!=requesterCommunicationSize),"从requesterRank接收到的requesterCommunicationSize错误");
-                print(requesterRank," accept成功 ");
             }while(++peercurrent<requesterCommunicationSize);
             acceptor.close();
         }
@@ -182,7 +181,6 @@ namespace com
             socket->read_some(boost::asio::buffer(&acceptorRank,sizeof(int)));
             _sockets[acceptorRank] = std::move(socket);
             _sockets[acceptorRank]->write_some(boost::asio::buffer(&requesterCommunicationSize,sizeof(int)));
-            print(acceptorRank," request成功 ");
         }
         catch(const std::exception& e)
         {

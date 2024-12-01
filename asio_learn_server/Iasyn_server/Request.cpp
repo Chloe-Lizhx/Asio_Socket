@@ -1,7 +1,7 @@
 #include "Request.hpp"
 
 namespace com{
-    void Request::wait(std::vector<PtrRequest> &requests )
+    void Request::wait(std::vector<RequestPtr> &requests )
     {
         for(const auto &request:requests)
         {

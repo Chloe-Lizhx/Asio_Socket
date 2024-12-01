@@ -2,14 +2,13 @@
 
 #include <vector>
 #include <memory>
+#include "SharedPointer.hpp"
 
 namespace com {
-class Request;
-using PtrRequest = std::shared_ptr<Request>;
 class Request {
 
 public:
-  static void wait(std::vector<PtrRequest> &requests);
+  static void wait(std::vector<RequestPtr> &requests);
 
   virtual ~Request();
 

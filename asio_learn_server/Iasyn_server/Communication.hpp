@@ -7,6 +7,7 @@
 #include <boost/range/irange.hpp>
 #include "utils/assertion.hpp"
 #include "SharedPointer.hpp"
+#include "Request.hpp"
 
 namespace com{
 
@@ -60,6 +61,8 @@ public:
                             std::string const &tag,
                             int               rank,
                             int               size);
+    
+    
     ///发送字符串
     virtual void send(std::string const &itemstoSend,Rank rankReceiver) = 0;
     ///发送int数据
@@ -82,6 +85,8 @@ public:
     virtual void send(std::span<const double> itemstoSend,Rank rankReceiver) = 0;
     ///异步发送一组double数据
     virtual RequestPtr aSend(std::span<const double> itemstoSend,Rank rankReceiver) = 0;
+    
+    
     ///接收字符串
     virtual void receive(std::string &itemstoReceive,Rank rankSender) = 0;
     ///接收int数据
@@ -104,6 +109,8 @@ public:
     virtual void receive(std::span<double> itemstoReceive,Rank rankSender) = 0;
     ///异步接收一组double数据
     virtual RequestPtr aReceive(std::span<double> itemstoReceive,Rank rankSender) = 0;
+
+
     ///同步发送double序列，大小+内容
     void sendRange(std::span<const double> itemstoSend, Rank rankReceiver);
     ///同步发送int序列，大小+内容
@@ -112,6 +119,78 @@ public:
     std::vector<int> receiveRange(Rank rankSender, AsRangeTag<int>);
     /// 同步接收double序列，并返回vector
     std::vector<double> receiveRange(Rank rankSender, AsRangeTag<double>);
+
+
+    /// 主进程调用,从各从进程接收数据并与主进程数据汇总
+    virtual void reduceSumForPrimaryRank(int itemstoSend,int &itemstoreceive);
+    /// 从进程调用，发送各自的数据到主进程
+    virtual void reduceSumForSecondaryRank(int &itemstoSend,Rank PrimaryRank);
+    /// 主进程调用，从各从进程接收数据并汇总，再将汇总后的数据发送至各从进程
+    virtual void AllreduceSumForPrimaryRank(int itemstoSend,int &itemstoReceive);
+    /// 从进程调用，发送各自的数据到主进程，并从主进程接收数据
+    virtual void AllreduceSumForSecondaryRank(int &itemstoSend,int &itemstoReceive,Rank PrimaryRank);
+   
+    /// 主进程调用,从各从进程接收span<int>数据并与主进程数据汇总
+    virtual void reduceSumForPrimaryRank(std::span<const int> itemstoSend,std::span<int> itemstoReceive);
+    /// 从进程调用，发送各自的span<int>数据到主进程
+    virtual void reduceSumForSecondaryRank(std::span<const int> itemstoSend,Rank PrimaryRank);
+    /// 主进程调用，从各从进程接收span<int>数据并汇总，再将汇总后的span<int>数据发送至各从进程
+    virtual void AllreduceSumForPrimaryRank(std::span<const int> itemstoSend,std::span<int> itemstoReceive);
+    /// 从进程调用，发送各自的span<int>数据到主进程，并从主进程接收span<int>数据
+    virtual void AllreduceSumForSecondaryRank(std::span<const int> itemstoSend,std::span<int> itemstoReceive,Rank PrimaryRank);
+    
+    /// 主进程调用,从各从进程接收数据并与主进程数据汇总
+    virtual void reduceSumForPrimaryRank(double itemstoSend,double &itemstoreceive);
+    /// 从进程调用，发送各自的数据到主进程
+    virtual void reduceSumForSecondaryRank(double &itemstoSend,Rank PrimaryRank);
+    /// 主进程调用，从各从进程接收数据并汇总，再将汇总后的数据发送至各从进程
+    virtual void AllreduceSumForPrimaryRank(double itemstoSend,double &itemstoReceive);
+    /// 从进程调用，发送各自的数据到主进程，并从主进程接收数据
+    virtual void AllreduceSumForSecondaryRank(double &itemstoSend,double &itemstoReceive,Rank PrimaryRank);
+
+    /// 主进程调用,从各从进程接收span<double>数据并与主进程数据汇总
+    virtual void reduceSumForPrimaryRank(std::span<const double> itemstoSend,std::span<double> itemstoReceive);
+    /// 从进程调用，发送各自的span<double>数据到主进程
+    virtual void reduceSumForSecondaryRank(std::span<const double> itemstoSend,Rank PrimaryRank);
+    /// 主进程调用，从各从进程接收span<double>数据并汇总，再将汇总后的span<int>数据发送至各从进程
+    virtual void AllreduceSumForPrimaryRank(std::span<const double> itemstoSend,std::span<double> itemstoReceive);
+    /// 从进程调用，发送各自的span<double>数据到主进程，并从主进程接收span<int>数据
+    virtual void AllreduceSumForSecondaryRank(std::span<const double> itemstoSend,std::span<double> itemstoReceive,Rank PrimaryRank);
+
+
+    /// 用作接收的对象为std::vector<double>,该参数不需要设置大小
+    virtual void AllreduceSumForPrimaryRank(std::span<const double> itemstoSend,std::vector<double> &itemstoReceive);
+    /// 用作接收的对象为std::vector<double>,该参数不需要设置大小
+    virtual void AllreduceSumForSecondaryRank(std::span<const double> itemstoSend,std::vector<double> &itemstoReceive,Rank PrimaryRank);
+    /// 用作接收的对象为std::vector<int>,该参数不需要设置大小
+    virtual void AllreduceSumForPrimaryRank(std::span<const int> itemstoSend,std::vector<int> &itemstoReceive);
+    /// 用作接收的对象为std::vector<int>,该参数不需要设置大小
+    virtual void AllreduceSumForSecondaryRank(std::span<const int> itemstoSend,std::vector<int> &itemstoReceive,Rank PrimaryRank);
+
+
+
+    virtual void broadcastForPrimaryRank(int itemstoSend);
+    virtual void broadcastForSecondaryRank(int &itemstoReceive, Rank rankBroadcaster);
+
+    virtual void broadcastForPrimaryRank(std::span<const int> itemstoSend);
+    virtual void broadcastForSecondaryRank(std::span<int> itemstoReceive, Rank rankBroadcaster);
+
+    virtual void broadcastForPrimaryRank(double itemstoSend);
+    virtual void broadcastForSecondaryRank(double &itemstoReceive, Rank rankBroadcaster);
+
+    virtual void broadcastForPrimaryRank(std::span<const double> itemstoSend);
+    virtual void broadcastForSecondaryRank(std::span<double> itemstoReceive, Rank rankBroadcaster);
+
+    virtual void broadcastForPrimaryRank(bool itemstoSend);
+    virtual void broadcastForSecondaryRank(bool &itemstoReceive, Rank rankBroadcaster);
+
+    virtual void broadcastForPrimaryRank(std::vector<int> const &v);
+    virtual void broadcastForSecondaryRank(std::vector<int> &v, Rank rankBroadcaster);
+
+    virtual void broadcastForPrimaryRank(std::vector<double> const &v);
+    virtual void broadcastForSecondaryRank(std::vector<double> &v, Rank rankBroadcaster);
+
+
 
     virtual void closeConnection() = 0;
 
