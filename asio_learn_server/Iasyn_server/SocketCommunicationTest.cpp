@@ -7,6 +7,7 @@
 #include <chrono>
 #include <set>
 #include <thread>
+#include <random>
 #include "CommunicationFactory.hpp"
 #include "SocketCommunicationFactory.hpp"
 #include "SocketCommunication.hpp"
@@ -55,7 +56,7 @@ void acceptCon_requestConTest(unsigned short port = 0,
     }else {//父进程
         sleep(1);
         std::string str;
-        comm->requsetConnection(acceptorName,requesterName,tag,requesterRank,requesterCommunicationSzie);
+        comm->requestConnection(acceptorName,requesterName,tag,requesterRank,requesterCommunicationSzie);
         for(int i=0;i<10;i++)
         {
             str.clear();
@@ -303,12 +304,318 @@ void reducesum_broadcast(unsigned short port = 0,
         std::cout<<""<<std::endl;
     }
 }
+//同步和异步的测试结果：
+//1、异步程序大概是同步的两倍
+//2、当数据够大和事件执行时间够长时，由于发送队列SendQueue造成的延时可忽略
+//3、异步程序有很好的调度算法，让并发线程并行运行
+void Sync(unsigned short port = 0,
+                bool reuseAddress = false,
+                std::string networkName = "lo",
+                std::string addressDirectory = ".")
+{
+    std::shared_ptr<CommunicationFactory> communicator(new SocketCommunicationFactory());
+    int vectorNum = 1000;
+    pid_t pid1 = fork();
+    if(pid1!=0)//0进程，同步收发
+    {
+        std::vector<std::vector<int>> matrix(vectorNum, std::vector<int>(vectorNum));
+        // 创建一个随机数生成器
+        std::default_random_engine rng;
+        // 创建一个均匀分布，范围从1到100
+        std::uniform_int_distribution<int> dist(1, 1000);
+        // 遍历矩阵并随机填充每个元素
+        for (int i = 0; i < vectorNum; ++i) 
+        {
+            for (int j = 0; j < vectorNum; ++j) 
+            {
+                matrix[i][j] = dist(rng);
+            }
+        }
+        Rank rank=0;
+        Rank remoteRank = 1;
+        //连接至进程1
+        CommunicationPtr Comm(communicator->newCommunication());
+        Comm->acceptConnectionAsServer("lzx","xzl","SyncTest",rank,1);
+        auto start = std::chrono::high_resolution_clock::now();
+        //遍历发送矩阵
+        for(int i=0;i<vectorNum;i++)
+        {
+            Comm->send(matrix[i],remoteRank);
+        }
+                //延时200ms，作为计算事件的执行时间
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        auto stop = std::chrono::high_resolution_clock::now();  
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count(); 
+        std::cout<<"同步进程0发送时间:"<<duration<<std::endl;
+    }
+    else if(pid1==0)//1进程，同步收发
+    {
+        std::vector<std::vector<int>> matrix(vectorNum, std::vector<int>(vectorNum,0));
+        Rank rank=1;
+        Rank remoteRank = 0;
+        CommunicationPtr Comm(communicator->newCommunication());
+        //连接
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        Comm->requestConnectionAsClient("lzx","xzl","SyncTest",{remoteRank},rank);
+        auto start = std::chrono::high_resolution_clock::now();
+        //遍历发送矩阵
+        for(int i=0;i<vectorNum;i++)
+        {
+            Comm->receive(matrix[i],remoteRank);
+        }
+                //延时200ms，作为计算事件的执行时间
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        auto stop = std::chrono::high_resolution_clock::now();  
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count(); 
+        std::cout<<"同步进程1接收时间:"<<duration<<std::endl;
+        exit(0);
+    }
+}
+
+void asyn(unsigned short port = 0,
+                bool reuseAddress = false,
+                std::string networkName = "lo",
+                std::string addressDirectory = ".")
+{
+     std::shared_ptr<CommunicationFactory> communicator(new SocketCommunicationFactory(port,reuseAddress,networkName,addressDirectory));
+    int vectorNum = 1000;
+    pid_t pid1 = fork();
+    if(pid1!=0)//0进程，同步收发
+    {
+        std::vector<std::vector<int>> matrix(vectorNum, std::vector<int>(vectorNum));
+        // 创建一个随机数生成器
+        std::default_random_engine rng;
+        // 创建一个均匀分布，范围从1到100
+        std::uniform_int_distribution<int> dist(1, 1000);
+        // 遍历矩阵并随机填充每个元素
+        for (int i = 0; i < vectorNum; ++i) 
+        {
+            for (int j = 0; j < vectorNum; ++j) 
+            {
+                matrix[i][j] = dist(rng);
+            }
+        }
+        Rank rank=0;
+        Rank remoteRank = 1;
+        //连接至进程1
+        std::vector<RequestPtr> requests;
+        CommunicationPtr Comm(communicator->newCommunication());
+        Comm->acceptConnectionAsServer("lzx","xzl","AsynTest",rank,1);
+        auto start = std::chrono::high_resolution_clock::now();
+        //遍历发送矩阵
+        for(int i=0;i<vectorNum;i++)
+        {
+            requests.push_back(Comm->aSend(matrix[i],remoteRank));
+        }
+        //延时200ms，作为计算事件的执行时间
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        Request::wait(requests);
+        auto stop = std::chrono::high_resolution_clock::now();  
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count(); 
+        std::cout<<"异步进程0发送时间:"<<duration<<std::endl;
+    }
+    else if(pid1==0)//1进程，同步收发
+    {
+        std::vector<std::vector<int>> matrix(vectorNum, std::vector<int>(vectorNum,0));
+        Rank rank=1;
+        Rank remoteRank = 0;
+        CommunicationPtr Comm(communicator->newCommunication());
+        //连接
+        std::vector<RequestPtr> requests;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        Comm->requestConnectionAsClient("lzx","xzl","AsynTest",{remoteRank},rank);
+        auto start = std::chrono::high_resolution_clock::now();
+        //遍历发送矩阵
+        for(int i=0;i<vectorNum;i++)
+        {
+            requests.push_back(Comm->aReceive(matrix[i],remoteRank));
+        }
+        //延时200ms，作为计算事件的执行时间
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        Request::wait(requests);
+        auto stop = std::chrono::high_resolution_clock::now();  
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count(); 
+        std::cout<<"异步进程1接收时间:"<<duration<<std::endl;
+    }
+}
+
+void Ajacobi(unsigned short port = 0,
+                bool reuseAddress = false,
+                std::string networkName = "lo",
+                std::string addressDirectory = ".")
+{
+    std::shared_ptr<CommunicationFactory> communicator(new SocketCommunicationFactory());
+
+    std::vector<CommunicationPtr> communicators(4);
+    //创建共享数据
+    int totalsize = 16;
+    int mysize = totalsize / 4;
+    int steps = 10;
+    int world_size = 4;
+    std::string tag = "88";
+    //创建4个进程
+    pid_t pid1 = fork();
+    pid_t pid2 = fork();
+    //定义进程号
+    int rank=-1;
+    //为每个进程分配唯一的进程号
+    if(pid1!=0&&pid2!=0)
+    {rank = 0;}
+    else if(pid1!=0&&pid2==0)
+    {rank = 1;}
+    else if(pid1==0&&pid2!=0)
+    {rank = 2;}
+    else if(pid1==0&&pid2==0)
+    {rank = 3;}
+    //相邻进程连接
+    communicators[rank] = communicator->newCommunication();
+    com::connectSeries("lzx",addressDirectory,tag,rank,world_size,communicators[rank]);
+    //声明私有数据
+    int begin_col =-1,end_col=-1;
+    int left = -1,right = -1;
+    //定义数据块
+    std::vector<std::vector<double>> a(totalsize, std::vector<double>(mysize + 2, 0.0));
+    std::vector<std::vector<double>> b(totalsize, std::vector<double>(mysize + 2, 0.0));
+    //中间变量，这里的4是因为有4个收发数据操作
+    std::vector<std::vector<double>> temp(4,std::vector<double>(totalsize,0.0));
+    std::vector<RequestPtr> requests;
+    if(rank==0||rank==world_size-1)
+    {requests.reserve(2);}
+    else{requests.reserve(4);}
+    //原始数据赋值
+    for(int i=0;i<mysize+2;i++)
+    {
+        for(int j=0;j<totalsize;j++)
+        {
+            a[j][i] = 0.0;
+        }
+    }
+    for(int i=0;i<totalsize;i++)
+    {
+        a[i][0] = 8.0;
+        a[i][mysize+1] = 8.0;
+    }
+    if (rank == 0) {
+        for (int i = 0; i < totalsize; i++) 
+        {
+            a[i][1] = 8.0;
+        }
+    } else if (rank == 3) {
+        for (int i = 0; i < totalsize; i++) 
+        {
+            a[i][mysize] = 8.0;
+        }
+    }
+    for (int i = 0; i < mysize+2; i++) {
+        a[0][i] = 8.0;
+        a[totalsize-1][i] = 8.0;
+    }
+    //根据rank判断left,right,begin_col,end_col
+    if(rank>0)
+    {left = rank-1;}
+
+    if(rank<world_size-1)
+    {right = rank+1;}
+
+    begin_col = 1;
+    end_col = mysize;
+    if (rank == 0)
+    {
+        begin_col = 2;
+    }
+    if (rank == world_size - 1) 
+    {
+        end_col = mysize-1;
+    }
+    //时间
+    int64_t duration = 0;
+    for (int n = 0; n <steps; n++) 
+    {
+        auto start = std::chrono::high_resolution_clock::now();
+        //先计算需要通信的边界数据
+        for(int i=1;i<totalsize-1;i++)
+        {
+            b[i][begin_col] = (a[i][begin_col+1]+a[i][begin_col-1]+a[i+1][begin_col]+a[i-1][begin_col])*0.25;
+            b[i][end_col] = (a[i][end_col+1]+a[i][end_col-1]+a[i+1][end_col]+a[i-1][end_col])*0.25;
+        }
+        //执行非阻塞通信 将下一次计算需要的数据首先进行通信
+        for(int i=0;i<totalsize;i++)
+        {
+            temp[0][i] = b[i][end_col];
+        }
+        if(rank!=world_size-1)
+        {requests.push_back(communicators[rank]->aSend(temp[0],right));}
+
+
+        for(int i=0;i<totalsize;i++)
+        {
+            temp[1][i] = b[i][begin_col];
+        }
+        if(rank!=0)
+        {requests.push_back(communicators[rank]->aSend(temp[1],left));}
+
+        if(rank!=0)
+        {requests.push_back(communicators[rank]->aReceive(temp[2],left));}
+        
+        if(rank!=world_size-1)
+        {requests.push_back(communicators[rank]->aReceive(temp[3],right));}
+
+        
+        //计算剩余的部分
+        for(int j = begin_col+1;j<=end_col-1;j++)
+        {
+            for(int i=1;i<=totalsize-2;i++)
+            {
+                b[i][j] = (a[i][j+1]+a[i][j-1]+a[i+1][j]+a[i-1][j])*0.25;
+            }
+        }
+        //更新数组
+        for (int j = begin_col; j <= end_col; j++) 
+        {
+            for (int i = 1; i < totalsize - 1; i++) 
+            {
+                a[i][j] = b[i][j];
+            }
+        }
+        //等待数据收发完成
+        Request::wait(requests);
+        auto stop = std::chrono::high_resolution_clock::now();  
+        duration = duration + std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
+        //数据收发完成后，更新边界值；
+        for(int i=0;i<totalsize;i++)
+        {
+            a[i][0] = temp[2][i];
+            a[i][mysize+1] = temp[3][i];
+        }
+
+        for(int i=0;i<requests.size();i++)
+        {
+            requests[i].reset();
+        }
+        requests.clear();
+        
+    }
+
+    // for (int i = 1; i < totalsize - 1; i++) 
+    // {
+    //     for (int j = begin_col; j <= end_col; j++) 
+    //     {
+    //         std::cout << rank << ", " << i << ", " << j << ", " << a[i][j] << std::endl;
+    //     }
+    // }
+    std::cout<<"rank:"<<rank<<",duration:"<<duration<<std::endl;
+
+}
 int main()
 {
     //acceptConAsServer_requestConAsClient();
     //acceptCon_requestConTest();
     //IntraConnect();
     //aSend_aRecvTest();
-    reducesum_broadcast();
+    //reducesum_broadcast();
+    // Sync();
+    // asyn();
+    // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    Ajacobi();
     return 0;
 }

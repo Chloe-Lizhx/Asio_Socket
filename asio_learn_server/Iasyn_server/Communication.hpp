@@ -31,13 +31,18 @@ public:
     {
         return boost::irange<Rank>(0,static_cast<Rank>(getRemoteCommunicatorSize()));
     }
-    //接受多个客户端的连接，每个客户端必须有不同的requesterRank，相同的requesterCommunicationSize,用于组内的通信
+    /*
+    *接受多个客户端的连接，每个客户端必须有不同的requesterRank，相同的requesterCommunicationSize
+    *1、用于接收组间请求，另一组的进程号从0～N-1,总共N个进程必须都建立连接，也就是要求请求方的进程号有序。
+    *2、用于接收组内请求，默认调用acceptConnection的主进程号为0,并接收剩余1～N-1从进程的连接请求，RankOffset
+    *   设置为1。
+    */
     virtual void acceptConnection(std::string const &acceptorName,
                                   std::string const &requesterName,
                                   std::string const &tag,
                                   int acceptorRank,
                                   int rankoffset = 0) = 0;
-    //用于组间的通信
+    //用于组间通信
     virtual void acceptConnectionAsServer(std::string const &acceptorName,
                                         std::string const &requesterName,
                                         std::string const &tag,
@@ -45,7 +50,7 @@ public:
                                         int                requesterCommunicatorSize) = 0;
             
     //请求连接至服务端，每一个SocketCommunicaton对象只能调用一次该方法。
-    virtual void requsetConnection(std::string const &acceptorName,
+    virtual void requestConnection(std::string const &acceptorName,
                                    std::string const &requesterName,
                                    std::string const &tag,
                                    int requesterRank,
@@ -208,4 +213,12 @@ protected:
     virtual int adjustRank(Rank rank) const;
 
 };
+
+    void connectSeries(
+    std::string const & participantName,
+    std::string const & addressDirectory,
+    std::string const & tag,
+    int                 rank,
+    int                 size,
+    CommunicationPtr Comm);
 }

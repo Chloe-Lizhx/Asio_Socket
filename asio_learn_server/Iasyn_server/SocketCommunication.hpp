@@ -34,7 +34,7 @@ public:
                                         int                acceptorRank,
                                         int                requesterCommunicatorSize) override;
 
-    virtual void requsetConnection(std::string const &acceptorName,
+    virtual void requestConnection(std::string const &acceptorName,
                                    std::string const &requesterName,
                                    std::string const &tag,
                                    int requesterRank,

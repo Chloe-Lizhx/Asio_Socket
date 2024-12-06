@@ -149,7 +149,7 @@ namespace com
         _thread = std::thread([this]{_service->run();});
     }
 
-    void SocketCommunication::requsetConnection(std::string const &acceptorName,
+    void SocketCommunication::requestConnection(std::string const &acceptorName,
                                                 std::string const &requesterName,
                                                 std::string const &tag,
                                                 int             requesterRank,
@@ -207,7 +207,6 @@ namespace com
             std::string ipAddress = address.substr(0,sep);
             std::string portNum = address.substr(sep+1);
             _portNumber = std::stoul(portNum);
-
             try
             {
                 using boost::asio::ip::tcp;

@@ -1,3 +1,4 @@
+#include <thread>
 #include "connectionInfo.hpp"
 
 namespace com{
@@ -50,7 +51,9 @@ std::string conInfo::getFileName() const
 std::string conInfoReader::read() const
 {
     auto path = getFileName();
-    if(!fs::exists(path)){std::cerr<<"comInfoReader::read can't get filename"<<std::endl;}
+    const auto waitdelay = std::chrono::milliseconds(1);
+    while(!fs::exists(path))
+    {std::this_thread::sleep_for(waitdelay);}
     std::ifstream ifs(path);
     std::string addressData;
     std::getline(ifs,addressData);

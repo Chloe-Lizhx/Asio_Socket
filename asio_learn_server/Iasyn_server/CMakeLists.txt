@@ -24,7 +24,7 @@ set(SocketCommunicationTest
 "utils/assertion.hpp"
 "utils/print.hpp")
 set(test1 
-"test1.cpp" 
+"test/test1.cpp" 
 "SharedPointer.hpp"
 "CommunicationFactory.hpp"
 "SocketCommunicationFactory.hpp"
@@ -45,7 +45,7 @@ set(test1
 "utils/assertion.hpp"
 "utils/print.hpp")
 set(test2 
-"test2.cpp" 
+"test/test2.cpp" 
 "SharedPointer.hpp"
 "CommunicationFactory.hpp"
 "SocketCommunicationFactory.hpp"
@@ -66,11 +66,11 @@ set(test2
 "utils/assertion.hpp"
 "utils/print.hpp")
 add_executable(SocketCommunicationTest ${SocketCommunicationTest})
-add_executable(test1 ${test1})
-add_executable(test2 ${test2})
+#add_executable(test1 ${test1})
+#add_executable(test2 ${test2})
 target_compile_options(SocketCommunicationTest PRIVATE -g)
-target_compile_options(test1 PRIVATE -g)
-target_compile_options(test2 PRIVATE -g)
+# target_compile_options(test1 PRIVATE -g)
+# target_compile_options(test2 PRIVATE -g)
 target_link_libraries(SocketCommunicationTest ${Boost_LIBRARIES})
-target_link_libraries(test1 ${Boost_LIBRARIES})
-target_link_libraries(test2 ${Boost_LIBRARIES})
+# target_link_libraries(test1 ${Boost_LIBRARIES})
+# target_link_libraries(test2 ${Boost_LIBRARIES})

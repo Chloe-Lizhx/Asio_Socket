@@ -1,4 +1,5 @@
 #include "Communication.hpp"
+#include "connectionInfo.hpp"
 
 namespace com{
 
@@ -20,7 +21,7 @@ namespace com{
             cleanupEstablishment(primaryName,secondaryName);
         }else{
             int secondaryRank = rank - rankOffset;
-            requsetConnection(primaryName,secondaryName,tag,secondaryRank,secondarySize);
+            requestConnection(primaryName,secondaryName,tag,secondaryRank,secondarySize);
         }
     }
 
@@ -383,5 +384,47 @@ namespace com{
         v.clear();
         v.resize(size);
         broadcastForSecondaryRank(std::span<double>{v},rankBroadcaster);
+    }
+
+    void connectSeries(
+    std::string const & participantName,
+    std::string const & addressDirectory,
+    std::string const & tag,
+    int                 rank,
+    int                 size,
+    CommunicationPtr Comm)
+    {
+        Assert(Comm->isconnected(),"已经连接");
+        Assert(!(rank>=0&&rank<size&&size>0),"参数错误");
+        if(size==1)
+        {return;}
+
+        std::string acceptorName = participantName + "acceptor";
+        std::string requesterName= participantName + "requester";
+
+        conInfoReader conInfoLeft(acceptorName,requesterName,tag,addressDirectory);
+        if ((rank % 2) == 0) {
+            if(rank==0)
+            {
+            Comm->requestConnectionAsClient(acceptorName, requesterName, tag, {rank+1},rank);
+            }
+            else if(rank==size-1)
+            {
+            Comm->requestConnectionAsClient(acceptorName , requesterName, tag, {rank-1}, rank);
+            }
+            else 
+            {
+            Comm->requestConnectionAsClient(acceptorName, requesterName, tag,{rank-1,rank+1},rank);
+            }
+        } else {
+            if(rank==size-1)
+            {
+            Comm->acceptConnectionAsServer(acceptorName, requesterName, tag, rank, 1);
+            }
+            else
+            {
+            Comm->acceptConnectionAsServer(acceptorName, requesterName, tag, rank, 2);
+            }
+        }
     }
 }
